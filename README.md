@@ -36,8 +36,8 @@ json-server --watch db.json --port 3001
 -----------------------------------------------------------------------------------------------------
 ## 项目结构
 src/
-├── api/               # Axios封装
-│   └── request.js     # 统一请求拦截器
+├── api/               # 接口请求
+│   └── 
 ├── components/        # 可复用组件
 │   ├── ArticleCard.vue
 │   └── CommentList.vue
@@ -48,6 +48,8 @@ src/
 ├── store/             # Pinia状态管理
 │   ├── userStore.js   # 用户登录状态
 │   └── postStore.js   # 文章数据
+├── utils/               # 工具函数
+│   └── request.js     # 统一请求拦截器
 ├── router/            # Vue Router
 │   └── index.js       # 路由配置
 └── App.vue            # 根组件
