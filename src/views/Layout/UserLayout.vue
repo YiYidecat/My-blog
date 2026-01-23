@@ -18,8 +18,8 @@
             <div class="user-menu">
               <el-dropdown>
                 <span class="el-dropdown-link">
-                  <img :src="userAvatar" alt="头像" class="avatar">
-                  {{ userName }}
+                  <img :src="user.avatar" alt="头像" class="avatar">
+                  {{ user.username }}
                   <el-icon><arrow-down /></el-icon>
                 </span>
                 <template #dropdown>
@@ -69,23 +69,23 @@
               <h3 class="sidebar-title">博主信息</h3>
               <div class="author-info">
                 <div class="author-avatar">
-                  <img :src="userAvatar" 
+                  <img :src="user.avatar" 
                        alt="博主头像" class="avatar-img" />
                 </div>
                 <div class="author-details">
-                  <h4 class="author-name">{{ userName }}</h4>
-                  <p class="author-bio">全栈开发者，专注于Web技术分享</p>
+                  <h4 class="author-name">{{ user.username }}</h4>
+                  <p class="author-bio">{{ user.bio }}</p>
                   <div class="author-stats">
                     <div class="stat">
-                      <span class="stat-number">42</span>
+                      <span class="stat-number">{{ user.postsCount }}</span>
                       <span class="stat-label">随笔</span>
                     </div>
                     <div class="stat">
-                      <span class="stat-number">128</span>
+                      <span class="stat-number">{{ user.articlesCount || 0 }}</span>
                       <span class="stat-label">文章</span>
                     </div>
                     <div class="stat">
-                      <span class="stat-number">256</span>
+                      <span class="stat-number">{{ user.commentsCount || 0 }}</span>
                       <span class="stat-label">评论</span>
                     </div>
                   </div>
@@ -97,40 +97,10 @@
             <div class="sidebar-section">
               <h3 class="sidebar-title">文章分类</h3>
               <ul class="category-list">
-                <li class="category-item">
-                  <a href="/category/frontend" class="category-link">
-                    <span class="category-name">前端技术</span>
-                    <span class="category-count">(18)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/backend" class="category-link">
-                    <span class="category-name">后端技术</span>
-                    <span class="category-count">(12)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/database" class="category-link">
-                    <span class="category-name">数据库</span>
-                    <span class="category-count">(8)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/devops" class="category-link">
-                    <span class="category-name">DevOps</span>
-                    <span class="category-count">(6)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/algorithm" class="category-link">
-                    <span class="category-name">算法与数据结构</span>
-                    <span class="category-count">(5)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/tools" class="category-link">
-                    <span class="category-name">开发工具</span>
-                    <span class="category-count">(3)</span>
+                <li v-for="category in categories" :key="category.id" class="category-item">
+                  <a :href="`/category/${category.id}`" class="category-link">
+                    <span class="category-name">{{ category.name }}</span>
+                    <span class="category-count">({{ category.count }})</span>
                   </a>
                 </li>
               </ul>
@@ -140,26 +110,12 @@
             <div class="sidebar-section">
               <h3 class="sidebar-title">最新评论</h3>
               <ul class="comment-list">
-                <li class="comment-item">
+                <li v-for="comment in recentComments" :key="comment.id" class="comment-item">
                   <div class="comment-content">
-                    <span class="comment-author">开发者小王</span> 发表在
-                    <a href="/post/1" class="comment-post">Vue3响应式原理深度解析</a>
+                    <span class="comment-author">{{ comment.author }}</span> 发表在
+                    <a :href="`/post/${comment.postId}`" class="comment-post">{{ getPostTitleById(comment.postId) }}</a>
                   </div>
-                  <div class="comment-text">这篇文章对我帮助很大，解决了困扰已久的问题！</div>
-                </li>
-                <li class="comment-item">
-                  <div class="comment-content">
-                    <span class="comment-author">前端小白</span> 发表在
-                    <a href="/post/3" class="comment-post">React Hooks最佳实践</a>
-                  </div>
-                  <div class="comment-text">讲解得非常清晰，特别是useEffect的部分。</div>
-                </li>
-                <li class="comment-item">
-                  <div class="comment-content">
-                    <span class="comment-author">Node爱好者</span> 发表在
-                    <a href="/post/2" class="comment-post">Node.js性能优化实战</a>
-                  </div>
-                  <div class="comment-text">性能优化技巧很实用，已经在项目中应用了。</div>
+                  <div class="comment-text">{{ comment.content }}</div>
                 </li>
               </ul>
             </div>
@@ -198,10 +154,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage } from 'element-plus'
+import api from '@/utils/request.js'
 import { 
   ArrowDown, 
   House, 
@@ -214,9 +171,18 @@ import {
 const router = useRouter()
 const userStore = useUserStore()
 
-// 示例用户信息
-const userName = ref(userStore.user?.username || '用户')
-const userAvatar = ref(userStore.user?.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png')
+// 响应式数据
+const posts = ref([])
+const categories = ref([])
+const recentComments = ref([])
+const user = ref({
+  username: '',
+  avatar: '',
+  bio: '',
+  postsCount: 0,
+  articlesCount: 0,
+  commentsCount: 0
+})
 
 // 根据当前路由决定是否显示分页
 const showPagination = computed(() => {
@@ -239,6 +205,36 @@ const handleLogout = () => {
   ElMessage.success('已退出登录')
   router.push('/login')
 }
+
+// 获取文章标题的方法
+const getPostTitleById = (postId) => {
+  const post = posts.value.find(p => p.id === postId)
+  return post ? post.title : '未知文章'
+}
+
+// 从 API 获取数据
+const fetchData = async () => {
+  try {
+    // 获取文章列表
+    posts.value = await api.get('/posts')
+    
+    // 获取分类列表
+    categories.value = await api.get('/categories')
+    
+    // 获取最新评论
+    recentComments.value = await api.get('/comments')
+    
+    // 获取用户信息
+    const userData = await api.get('/users/1')
+    user.value = userData
+  } catch (error) {
+    console.error('获取数据失败:', error)
+  }
+}
+
+onMounted(() => {
+  fetchData()
+})
 </script>
 
 <style scoped>

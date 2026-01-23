@@ -10,11 +10,11 @@ const routes = [
     name: 'guest-home',
     component: GuestLayout,
     children: [
-      {
-        path: '',
-        name: 'home',
-        component: HomeView
-      },
+      // {
+      //   path: '',
+      //   name: 'home',
+      //   component: HomeView
+      // },
       {
         path: 'articles',
         name: 'guest-articles',

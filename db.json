@@ -2,30 +2,134 @@
   "posts": [
     {
       "id": "1",
-      "title": "Vue3响应式原理深度解析",
-      "content": "Vue3使用Proxy替代Object.defineProperty...",
-      "category": "前端",
-      "author": "张三",
-      "likes": 21,
-      "comments": [
-        {
-          "id": 101,
-          "content": "讲得透彻！"
-        },
-        {
-          "id": 102,
-          "content": "需要源码链接"
-        }
-      ]
+      "title": "Vue3响应式原理深度解析与实战应用",
+      "content": "Vue.js作为一款渐进式JavaScript框架，其核心特性之一就是响应式系统。Vue 3通过Proxy对象重构了响应式系统，带来了更好的性能和更丰富的功能。本文将深入探讨Vue 3响应式原理的实现机制，并结合实际案例展示如何在项目中充分利用这一特性。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-15",
+      "likes": 156,
+      "views": 1256,
+      "commentsCount": 24
+    },
+    {
+      "id": "2",
+      "title": "Node.js性能优化实战：从代码到架构的全面调优",
+      "content": "在现代Web应用开发中，服务端性能优化至关重要。Node.js以其事件驱动、非阻塞I/O模型著称，但在高并发场景下仍需要针对性优化。本文将从代码层面、架构设计、内存管理等多个维度探讨Node.js性能优化策略。",
+      "category": "后端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-10",
+      "likes": 89,
+      "views": 892,
+      "commentsCount": 18
+    },
+    {
+      "id": "3",
+      "title": "React Hooks最佳实践与高级用法详解",
+      "content": "React Hooks自发布以来彻底改变了函数组件的开发方式，使我们能够在不编写类的情况下使用状态和其他React特性。本文将深入探讨各种内置Hooks的使用场景，并介绍如何自定义Hooks来提取组件逻辑。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-05",
+      "likes": 112,
+      "views": 756,
+      "commentsCount": 15
+    },
+    {
+      "id": "4",
+      "title": "TypeScript高级类型编程：从入门到精通",
+      "content": "TypeScript作为JavaScript的超集，不仅提供了静态类型检查能力，还引入了丰富的类型系统。高级类型编程是TypeScript的核心特性之一，掌握这些特性能够显著提升代码质量和开发效率。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2023-12-28",
+      "likes": 95,
+      "views": 634,
+      "commentsCount": 12
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "前端技术",
+      "count": 18
+    },
+    {
+      "id": "2",
+      "name": "后端技术",
+      "count": 12
+    },
+    {
+      "id": "3",
+      "name": "数据库",
+      "count": 8
+    },
+    {
+      "id": "4",
+      "name": "DevOps",
+      "count": 6
+    },
+    {
+      "id": "5",
+      "name": "算法与数据结构",
+      "count": 5
+    },
+    {
+      "id": "6",
+      "name": "开发工具",
+      "count": 3
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "postId": 1,
+      "author": "开发者小王",
+      "content": "这篇文章对我帮助很大，解决了困扰已久的问题！",
+      "date": "2024-01-15 15:30",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235cb85c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E王%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "3",
+      "postId": 2,
+      "author": "Node爱好者",
+      "content": "性能优化技巧很实用，已经在项目中应用了。",
+      "date": "2024-01-13 16:45",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23337ab7'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EN%3C/text%3E%3C/svg%3E"
     }
   ],
   "users": [
     {
       "id": "1",
-      "username": "user1",
-      "password": "123456",
-      "avatar": "https://example.com/avatar1.jpg"
+      "username": "墨语",
+      "email": "mo@example.com",
+      "password": "hashed_password_here",
+      "bio": "全栈开发者，专注于Web技术分享",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23009688'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E墨%3C/text%3E%3C/svg%3E",
+      "postsCount": 42,
+      "followersCount": 128,
+      "followingCount": 64,
+      "createdAt": "2023-05-15 10:30:00"
     }
   ],
-  "comments": []
+  "notifications": [
+    {
+      "id": "1",
+      "title": "新评论通知",
+      "content": "您的文章《Vue3响应式原理》收到了新的评论",
+      "time": "2024-01-15 14:30",
+      "read": false
+    },
+    {
+      "id": "2",
+      "title": "系统消息",
+      "content": "您的文章《Node.js性能优化》已被推荐至首页",
+      "time": "2024-01-14 09:20",
+      "read": false
+    },
+    {
+      "id": "3",
+      "title": "关注提醒",
+      "content": "用户张三关注了您",
+      "time": "2024-01-13 16:45",
+      "read": true
+    }
+  ]
 }

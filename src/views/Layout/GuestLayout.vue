@@ -29,119 +29,29 @@
           <div class="content-left">
             <!-- 文章列表 -->
             <div class="post-list">
-              <article class="post-item">
+              <article v-for="post in posts" :key="post.id" class="post-item">
                 <div class="post-header">
                   <h2 class="post-title">
-                    <a href="/post/1" class="post-link">Vue3响应式原理深度解析与实战应用</a>
+                    <a :href="`/post/${post.id}`" class="post-link">{{ post.title }}</a>
                   </h2>
                   <div class="post-meta">
-                    <span class="meta-date">发布于 2024-01-15 10:30</span>
+                    <span class="meta-date">发布于 {{ formatDate(post.publishDate) }}</span>
                     <span class="meta-category">
-                      <a href="/category/frontend" class="category-link">前端技术</a>
+                      <a :href="`/category/${post.category.toLowerCase()}`" class="category-link">{{ post.category }}</a>
                     </span>
-                    <span class="meta-views">阅读(1256)</span>
-                    <span class="meta-comments">评论(24)</span>
-                    <span class="meta-likes">推荐(18)</span>
+                    <span class="meta-views">阅读({{ post.views }})</span>
+                    <span class="meta-comments">评论({{ post.commentsCount }})</span>
+                    <span class="meta-likes">推荐({{ post.likes }})</span>
                   </div>
                 </div>
                 <div class="post-summary">
-                  深入探讨Vue3的响应式系统是如何工作的，包括Proxy的使用、依赖收集和触发更新的机制。本文将详细介绍reactive、ref、computed等API的内部实现原理，并结合实际项目中的使用场景，分享性能优化和最佳实践...
+                  {{ post.content.slice(0, 100) }}...
                 </div>
                 <div class="post-footer">
                   <div class="post-tags">
-                    <a href="/tag/vue" class="tag">Vue</a>
-                    <a href="/tag/javascript" class="tag">JavaScript</a>
-                    <a href="/tag/frontend" class="tag">前端</a>
-                    <a href="/tag/reactivity" class="tag">响应式</a>
+                    <a v-for="tag in post.tags" :key="tag" :href="`/tag/${tag.toLowerCase()}`" class="tag">{{ tag }}</a>
                   </div>
-                  <a href="/post/1" class="read-more">阅读全文 »</a>
-                </div>
-              </article>
-
-              <article class="post-item">
-                <div class="post-header">
-                  <h2 class="post-title">
-                    <a href="/post/2" class="post-link">Node.js性能优化实战：从代码到架构的全面调优</a>
-                  </h2>
-                  <div class="post-meta">
-                    <span class="meta-date">发布于 2024-01-10 14:22</span>
-                    <span class="meta-category">
-                      <a href="/category/backend" class="category-link">后端技术</a>
-                    </span>
-                    <span class="meta-views">阅读(892)</span>
-                    <span class="meta-comments">评论(18)</span>
-                    <span class="meta-likes">推荐(12)</span>
-                  </div>
-                </div>
-                <div class="post-summary">
-                  如何让你的Node.js应用运行得更快，从代码层面到系统层面的优化策略。包括事件循环优化、内存管理、集群模式使用、异步编程最佳实践等内容。本文将通过实际案例展示如何识别性能瓶颈并进行针对性优化...
-                </div>
-                <div class="post-footer">
-                  <div class="post-tags">
-                    <a href="/tag/nodejs" class="tag">Node.js</a>
-                    <a href="/tag/performance" class="tag">性能优化</a>
-                    <a href="/tag/backend" class="tag">后端</a>
-                    <a href="/tag/server" class="tag">服务器</a>
-                  </div>
-                  <a href="/post/2" class="read-more">阅读全文 »</a>
-                </div>
-              </article>
-
-              <article class="post-item">
-                <div class="post-header">
-                  <h2 class="post-title">
-                    <a href="/post/3" class="post-link">React Hooks最佳实践与高级用法详解</a>
-                  </h2>
-                  <div class="post-meta">
-                    <span class="meta-date">发布于 2024-01-05 09:15</span>
-                    <span class="meta-category">
-                      <a href="/category/frontend" class="category-link">前端技术</a>
-                    </span>
-                    <span class="meta-views">阅读(1043)</span>
-                    <span class="meta-comments">评论(32)</span>
-                    <span class="meta-likes">推荐(21)</span>
-                  </div>
-                </div>
-                <div class="post-summary">
-                  掌握React Hooks的高级用法和注意事项，包括自定义Hook的设计、useEffect的依赖项处理、useMemo和useCallback的性能优化，以及常见陷阱的避免方法。本文还将分享在大型项目中如何组织和管理Hooks代码...
-                </div>
-                <div class="post-footer">
-                  <div class="post-tags">
-                    <a href="/tag/react" class="tag">React</a>
-                    <a href="/tag/hooks" class="tag">Hooks</a>
-                    <a href="/tag/frontend" class="tag">前端</a>
-                    <a href="/tag/javascript" class="tag">JavaScript</a>
-                  </div>
-                  <a href="/post/3" class="read-more">阅读全文 »</a>
-                </div>
-              </article>
-
-              <article class="post-item">
-                <div class="post-header">
-                  <h2 class="post-title">
-                    <a href="/post/4" class="post-link">TypeScript高级类型编程：从入门到精通</a>
-                  </h2>
-                  <div class="post-meta">
-                    <span class="meta-date">发布于 2023-12-28 16:45</span>
-                    <span class="meta-category">
-                      <a href="/category/frontend" class="category-link">前端技术</a>
-                    </span>
-                    <span class="meta-views">阅读(756)</span>
-                    <span class="meta-comments">评论(15)</span>
-                    <span class="meta-likes">推荐(9)</span>
-                  </div>
-                </div>
-                <div class="post-summary">
-                  TypeScript的类型系统提供了强大的类型编程能力，可以创建复杂的类型约束和转换。本文将深入讲解条件类型、映射类型、索引类型、模板字面量类型等高级特性，并展示如何在实战项目中应用这些技术...
-                </div>
-                <div class="post-footer">
-                  <div class="post-tags">
-                    <a href="/tag/typescript" class="tag">TypeScript</a>
-                    <a href="/tag/typing" class="tag">类型系统</a>
-                    <a href="/tag/frontend" class="tag">前端</a>
-                    <a href="/tag/programming" class="tag">编程</a>
-                  </div>
-                  <a href="/post/4" class="read-more">阅读全文 »</a>
+                  <a :href="`/post/${post.id}`" class="read-more">阅读全文 »</a>
                 </div>
               </article>
             </div>
@@ -167,25 +77,25 @@
               <div class="author-info">
                 <div class="author-avatar">
                   <img
-                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23009688'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E墨%3C/text%3E%3C/svg%3E"
+                    :src="user.avatar"
                     alt="博主头像"
                     class="avatar-img"
                   />
                 </div>
                 <div class="author-details">
-                  <h4 class="author-name">墨语</h4>
-                  <p class="author-bio">全栈开发者，专注于Web技术分享</p>
+                  <h4 class="author-name">{{ user.username }}</h4>
+                  <p class="author-bio">{{ user.bio }}</p>
                   <div class="author-stats">
                     <div class="stat">
-                      <span class="stat-number">42</span>
+                      <span class="stat-number">{{ user.postsCount }}</span>
                       <span class="stat-label">随笔</span>
                     </div>
                     <div class="stat">
-                      <span class="stat-number">128</span>
+                      <span class="stat-number">{{ user.articlesCount }}</span>
                       <span class="stat-label">文章</span>
                     </div>
                     <div class="stat">
-                      <span class="stat-number">256</span>
+                      <span class="stat-number">{{ user.commentsCount }}</span>
                       <span class="stat-label">评论</span>
                     </div>
                   </div>
@@ -197,40 +107,10 @@
             <div class="sidebar-section">
               <h3 class="sidebar-title">文章分类</h3>
               <ul class="category-list">
-                <li class="category-item">
-                  <a href="/category/frontend" class="category-link">
-                    <span class="category-name">前端技术</span>
-                    <span class="category-count">(18)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/backend" class="category-link">
-                    <span class="category-name">后端技术</span>
-                    <span class="category-count">(12)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/database" class="category-link">
-                    <span class="category-name">数据库</span>
-                    <span class="category-count">(8)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/devops" class="category-link">
-                    <span class="category-name">DevOps</span>
-                    <span class="category-count">(6)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/algorithm" class="category-link">
-                    <span class="category-name">算法与数据结构</span>
-                    <span class="category-count">(5)</span>
-                  </a>
-                </li>
-                <li class="category-item">
-                  <a href="/category/tools" class="category-link">
-                    <span class="category-name">开发工具</span>
-                    <span class="category-count">(3)</span>
+                <li v-for="category in categories" :key="category.id" class="category-item">
+                  <a :href="`/category/${category.id}`" class="category-link">
+                    <span class="category-name">{{ category.name }}</span>
+                    <span class="category-count">({{ category.count }})</span>
                   </a>
                 </li>
               </ul>
@@ -240,26 +120,12 @@
             <div class="sidebar-section">
               <h3 class="sidebar-title">最新评论</h3>
               <ul class="comment-list">
-                <li class="comment-item">
+                <li v-for="comment in recentComments" :key="comment.id" class="comment-item">
                   <div class="comment-content">
-                    <span class="comment-author">开发者小王</span> 发表在
-                    <a href="/post/1" class="comment-post">Vue3响应式原理深度解析</a>
+                    <span class="comment-author">{{ comment.author }}</span> 发表在
+                    <a :href="`/post/${comment.postId}`" class="comment-post">{{ getPostTitleById(comment.postId) }}</a>
                   </div>
-                  <div class="comment-text">这篇文章对我帮助很大，解决了困扰已久的问题！</div>
-                </li>
-                <li class="comment-item">
-                  <div class="comment-content">
-                    <span class="comment-author">前端小白</span> 发表在
-                    <a href="/post/3" class="comment-post">React Hooks最佳实践</a>
-                  </div>
-                  <div class="comment-text">讲解得非常清晰，特别是useEffect的部分。</div>
-                </li>
-                <li class="comment-item">
-                  <div class="comment-content">
-                    <span class="comment-author">Node爱好者</span> 发表在
-                    <a href="/post/2" class="comment-post">Node.js性能优化实战</a>
-                  </div>
-                  <div class="comment-text">性能优化技巧很实用，已经在项目中应用了。</div>
+                  <div class="comment-text">{{ comment.content }}</div>
                 </li>
               </ul>
             </div>
@@ -299,7 +165,57 @@
 </template>
 
 <script setup>
-// 本组件不含额外脚本逻辑，保留空脚本以便未来扩展
+import { ref, onMounted } from 'vue'
+import api from '@/utils/request.js'
+
+// 响应式数据
+const posts = ref([])
+const categories = ref([])
+const recentComments = ref([])
+const user = ref({
+  username: '',
+  avatar: '',
+  bio: '',
+  postsCount: 0,
+  articlesCount: 0,
+  commentsCount: 0
+})
+
+// 获取文章标题的方法
+const getPostTitleById = (postId) => {
+  const post = posts.value.find(p => p.id === postId)
+  return post ? post.title : '未知文章'
+}
+
+// 格式化日期
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return ` ${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+}
+
+// 从 API 获取数据
+const fetchData = async () => {
+  try {
+    // 获取文章列表
+    posts.value = await api.get('/posts')
+    
+    // 获取分类列表
+    categories.value = await api.get('/categories')
+    
+    // 获取最新评论
+    recentComments.value = await api.get('/comments')
+    
+    // 获取用户信息
+    const userData = await api.get('/users/1')
+    user.value = userData
+  } catch (error) {
+    console.error('获取数据失败:', error)
+  }
+}
+
+onMounted(() => {
+  fetchData()
+})
 </script>
 
 <style scoped>
