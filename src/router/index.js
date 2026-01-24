@@ -1,69 +1,106 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import GuestLayout from '../views/Layout/GuestLayout.vue'
-import UserLayout from '../views/Layout/UserLayout.vue'
+import Layout from '../views/Layout/index.vue'
 import HomeView from '../views/HomeView.vue'
+import LoginView from '../views/Login/index.vue'
 
 const routes = [
-  // 游客路由
+  // 登录路由
   {
-    path: '/',
-    name: 'guest-home',
-    component: GuestLayout,
+    path: '/login',
+    name: 'login',
+    component: LoginView,
     children: [
-      // {
-      //   path: '',
-      //   name: 'home',
-      //   component: HomeView
-      // },
       {
-        path: 'articles',
-        name: 'guest-articles',
-        component: () => import('../views/HomeView.vue') // 或创建专门的文章页面
-      },
-      {
-        path: 'categories',
-        name: 'categories',
-        component: () => import('../views/HomeView.vue') // 或创建专门的分类页面
-      },
-      {
-        path: 'about',
-        name: 'about',
-        component: () => import('../views/HomeView.vue') // 或创建专门的关于页面
+        path: '',
+        name: 'login-form',
+        component: () => import('../views/Login/components/Login.vue')
       }
     ]
   },
-  // 用户路由
+  // 注册路由
+  {
+    path: '/register',
+    name: 'register',
+    component: LoginView,
+    children: [
+      {
+        path: '',
+        name: 'register-form',
+        component: () => import('../views/Login/components/Register.vue')
+      }
+    ]
+  },
+  // 主页路由（使用统一布局）
+  {
+    path: '/',
+    name: 'home',
+    component: Layout,
+    children: [
+      // {
+      //   path: 'blog',
+      //   name: 'blog',
+      //   component: () => import('../views/BlogView.vue') // 博文页面
+      // },
+      // {
+      //   path: 'category',
+      //   name: 'category',
+      //   component: () => import('../views/CategoryView.vue') // 分类页面
+      // },
+      // {
+      //   path: 'archive',
+      //   name: 'archive',
+      //   component: () => import('../views/ArchiveView.vue') // 归档页面
+      // },
+      // {
+      //   path: 'about',
+      //   name: 'about',
+      //   component: () => import('../views/AboutView.vue') // 关于页面
+      // },
+      // {
+      //   path: 'post/:id',
+      //   name: 'post-detail',
+      //   component: () => import('../views/PostDetailView.vue'), // 文章详情页
+      //   props: true
+      // }
+    ]
+  },
+  // 用户仪表盘路由
   {
     path: '/dashboard',
-    name: 'user-dashboard',
-    component: UserLayout,
-    // children: [
-    //   {
-    //     path: '',
-    //     name: 'dashboard',
-    //     component: () => import('../views/DashboardView.vue') // 可以创建一个仪表盘页面
-    //   },
-    //   {
-    //     path: 'my-articles',
-    //     name: 'my-articles',
-    //     component: () => import('../views/MyArticlesView.vue') // 可以创建一个我的文章页面
-    //   },
-    //   {
-    //     path: 'favorites',
-    //     name: 'favorites',
-    //     component: () => import('../views/FavoritesView.vue') // 可以创建一个收藏页面
-    //   },
-    //   {
-    //     path: 'profile',
-    //     name: 'profile',
-    //     component: () => import('../views/ProfileView.vue') // 可以创建一个个人资料页面
-    //   },
-    //   {
-    //     path: 'editor',
-    //     name: 'editor',
-    //     component: () => import('../views/EditorView.vue') // 可以创建一个编辑器页面
-    //   }
-    // ]
+    name: 'dashboard',
+    component: Layout,
+    children: [
+      // {
+      //   path: '',
+      //   name: 'dashboard-home',
+      //   component: () => import('../views/Dashboard/DashboardHome.vue') // 仪表盘主页
+      // },
+      // {
+      //   path: 'articles',
+      //   name: 'articles',
+      //   component: () => import('../views/Dashboard/ArticlesView.vue') // 我的文章
+      // },
+      // {
+      //   path: 'favorites',
+      //   name: 'favorites',
+      //   component: () => import('../views/Dashboard/FavoritesView.vue') // 收藏
+      // },
+      // {
+      //   path: 'profile',
+      //   name: 'profile',
+      //   component: () => import('../views/Dashboard/ProfileView.vue') // 个人资料
+      // },
+      // {
+      //   path: 'editor',
+      //   name: 'editor',
+      //   component: () => import('../views/Dashboard/EditorView.vue') // 编辑器
+      // },
+      // {
+      //   path: 'settings',
+      //   name: 'settings',
+      //   component: () => import('../views/Dashboard/SettingsView.vue') // 设置
+      // }
+    ]
   }
 ]
 

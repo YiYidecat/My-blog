@@ -1,5 +1,5 @@
+import { tr } from 'element-plus/es/locales.mjs'
 import { defineStore } from 'pinia'
-import api from '@/utils/request.js'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -7,10 +7,12 @@ export const useUserStore = defineStore('user', {
     user: null
   }),
   actions: {
-    async login(username, password) {
-      const { token } = await api.post('/login', { username, password })
-      this.token = token
-      this.user = { username }
+    login(userData) {
+      // 直接存储用户数据，因为我们已经在组件中验证了用户凭据
+      this.user = userData
+
+      this.token = '1' // 在实际应用中，这里应该存储从服务器获取的token，在这里仅作为区分是否登录的标志
+
       return true
     },
     logout() {

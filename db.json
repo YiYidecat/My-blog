@@ -9,7 +9,8 @@
       "publishDate": "2024-01-15",
       "likes": 156,
       "views": 1256,
-      "commentsCount": 24
+      "commentsCount": 24,
+      "tags": ["Vue", "JavaScript", "前端", "响应式"]
     },
     {
       "id": "2",
@@ -20,7 +21,8 @@
       "publishDate": "2024-01-10",
       "likes": 89,
       "views": 892,
-      "commentsCount": 18
+      "commentsCount": 18,
+      "tags": ["Node.js", "性能优化", "后端", "服务器"]
     },
     {
       "id": "3",
@@ -31,7 +33,8 @@
       "publishDate": "2024-01-05",
       "likes": 112,
       "views": 756,
-      "commentsCount": 15
+      "commentsCount": 15,
+      "tags": ["React", "Hooks", "前端", "JavaScript"]
     },
     {
       "id": "4",
@@ -42,76 +45,394 @@
       "publishDate": "2023-12-28",
       "likes": 95,
       "views": 634,
-      "commentsCount": 12
+      "commentsCount": 12,
+      "tags": ["TypeScript", "JavaScript", "前端", "类型系统"]
+    },
+    {
+      "id": "5",
+      "title": "微服务架构设计原则与实践",
+      "content": "随着业务规模的增长，单体应用逐渐暴露出扩展性差、维护困难等问题。微服务架构通过将大型应用拆分为一系列小型、独立的服务，有效解决了这些问题。本文将探讨微服务架构的设计原则、优势与挑战。",
+      "category": "后端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-20",
+      "likes": 78,
+      "views": 987,
+      "commentsCount": 21,
+      "tags": ["微服务", "架构", "后端", "分布式"]
+    },
+    {
+      "id": "6",
+      "title": "Docker容器化部署完全指南",
+      "content": "Docker已经成为现代软件开发和部署的标准工具。通过容器化技术，我们可以轻松实现应用的一致性部署、快速扩展和高效运维。本文将从基础概念入手，逐步深入到复杂的容器编排场景。",
+      "category": "DevOps",
+      "author": "墨语",
+      "publishDate": "2024-01-18",
+      "likes": 134,
+      "views": 1423,
+      "commentsCount": 28,
+      "tags": ["Docker", "容器", "DevOps", "部署"]
+    },
+    {
+      "id": "7",
+      "title": "Redis高性能缓存策略详解",
+      "content": "Redis作为业界领先的内存数据库，在缓存、会话存储、实时分析等场景中发挥着重要作用。本文将深入探讨Redis的各种数据结构、持久化机制以及在高并发环境下的最佳实践。",
+      "category": "数据库",
+      "author": "墨语",
+      "publishDate": "2024-01-12",
+      "likes": 92,
+      "views": 856,
+      "commentsCount": 16,
+      "tags": ["Redis", "缓存", "数据库", "性能"]
+    },
+    {
+      "id": "8",
+      "title": "JavaScript异步编程完全指南",
+      "content": "JavaScript的异步编程模型是其核心特性之一。从回调函数到Promise，再到async/await，异步编程的方式不断演进。本文将系统梳理JavaScript异步编程的发展历程，并提供实际应用场景的最佳实践。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-08",
+      "likes": 143,
+      "views": 1123,
+      "commentsCount": 22,
+      "tags": ["JavaScript", "异步", "前端", "Promise"]
+    },
+    {
+      "id": "9",
+      "title": "Go语言并发编程实战",
+      "content": "Go语言天生支持并发编程，其goroutine和channel机制为开发者提供了强大的并发原语。本文将通过实际案例演示如何在Go中构建高并发的应用程序，涵盖常见并发模式和陷阱。",
+      "category": "后端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-03",
+      "likes": 67,
+      "views": 743,
+      "commentsCount": 14,
+      "tags": ["Go", "并发", "后端", "Goroutine"]
+    },
+    {
+      "id": "10",
+      "title": "机器学习算法基础与Python实现",
+      "content": "机器学习作为人工智能的重要分支，正在深刻改变我们的生活。本文将介绍监督学习、无监督学习等基本概念，并通过Python代码示例演示经典算法的实现过程。",
+      "category": "算法与数据结构",
+      "author": "墨语",
+      "publishDate": "2023-12-25",
+      "likes": 118,
+      "views": 987,
+      "commentsCount": 19,
+      "tags": ["机器学习", "Python", "算法", "AI"]
+    },
+    {
+      "id": "11",
+      "title": "CSS Grid布局完全指南",
+      "content": "CSS Grid是现代网页布局的强大工具，它提供了二维布局系统，可以轻松实现复杂的页面布局。本文将详细讲解Grid的各项属性和使用技巧。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-22",
+      "likes": 105,
+      "views": 1056,
+      "commentsCount": 25,
+      "tags": ["CSS", "Grid", "前端", "布局"]
+    },
+    {
+      "id": "12",
+      "title": "Kubernetes集群管理与运维",
+      "content": "Kubernetes已成为容器编排的事实标准。本文将介绍Kubernetes的核心概念、架构设计以及在生产环境中的最佳实践。",
+      "category": "DevOps",
+      "author": "墨语",
+      "publishDate": "2024-01-19",
+      "likes": 88,
+      "views": 1201,
+      "commentsCount": 17,
+      "tags": ["Kubernetes", "容器", "DevOps", "运维"]
+    },
+    {
+      "id": "13",
+      "title": "MongoDB文档数据库实战",
+      "content": "MongoDB作为NoSQL数据库的代表，以其灵活的文档模型和水平扩展能力受到广泛欢迎。本文将深入探讨MongoDB的数据模型、查询语法和性能优化。",
+      "category": "数据库",
+      "author": "墨语",
+      "publishDate": "2024-01-16",
+      "likes": 76,
+      "views": 876,
+      "commentsCount": 13,
+      "tags": ["MongoDB", "NoSQL", "数据库", "文档"]
+    },
+    {
+      "id": "14",
+      "title": "Vue3 Composition API深度解析",
+      "content": "Vue3的Composition API为我们提供了一种更灵活、更可重用的逻辑组织方式。本文将深入探讨其设计理念和实际应用。",
+      "category": "前端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-14",
+      "likes": 127,
+      "views": 1189,
+      "commentsCount": 26,
+      "tags": ["Vue3", "Composition API", "前端", "JavaScript"]
+    },
+    {
+      "id": "15",
+      "title": "Rust语言入门与系统编程",
+      "content": "Rust语言以其内存安全和高性能特性在系统编程领域备受关注。本文将介绍Rust的基本语法、所有权系统和实际应用场景。",
+      "category": "后端技术",
+      "author": "墨语",
+      "publishDate": "2024-01-11",
+      "likes": 94,
+      "views": 956,
+      "commentsCount": 20,
+      "tags": ["Rust", "系统编程", "后端", "内存安全"]
     }
   ],
   "categories": [
     {
       "id": "1",
       "name": "前端技术",
-      "count": 18
+      "count": 25
     },
     {
       "id": "2",
       "name": "后端技术",
-      "count": 12
+      "count": 18
     },
     {
       "id": "3",
       "name": "数据库",
-      "count": 8
+      "count": 12
     },
     {
       "id": "4",
       "name": "DevOps",
-      "count": 6
+      "count": 10
     },
     {
       "id": "5",
       "name": "算法与数据结构",
-      "count": 5
+      "count": 8
     },
     {
       "id": "6",
       "name": "开发工具",
-      "count": 3
+      "count": 7
+    },
+    {
+      "id": "7",
+      "name": "移动开发",
+      "count": 6
+    },
+    {
+      "id": "8",
+      "name": "人工智能",
+      "count": 9
+    },
+    {
+      "id": "9",
+      "name": "网络安全",
+      "count": 5
+    },
+    {
+      "id": "10",
+      "name": "云计算",
+      "count": 11
     }
   ],
   "comments": [
     {
       "id": "1",
-      "postId": 1,
+      "postId": "1",
       "author": "开发者小王",
       "content": "这篇文章对我帮助很大，解决了困扰已久的问题！",
       "date": "2024-01-15 15:30",
       "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235cb85c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E王%3C/text%3E%3C/svg%3E"
     },
     {
+      "id": "2",
+      "postId": "1",
+      "author": "前端小白",
+      "content": "讲解得非常清晰，特别是响应式系统的部分。",
+      "date": "2024-01-15 16:45",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235bc0de'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E白%3C/text%3E%3C/svg%3E"
+    },
+    {
       "id": "3",
-      "postId": 2,
+      "postId": "2",
       "author": "Node爱好者",
       "content": "性能优化技巧很实用，已经在项目中应用了。",
       "date": "2024-01-13 16:45",
       "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23337ab7'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EN%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "4",
+      "postId": "3",
+      "author": "React开发者",
+      "content": "Hooks的使用场景分析得很到位，学到了很多。",
+      "date": "2024-01-06 10:20",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3ER%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "5",
+      "postId": "4",
+      "author": "TS专家",
+      "content": "TypeScript高级类型的讲解很深入，值得反复学习。",
+      "date": "2023-12-29 14:30",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23d9534f'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3ET%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "6",
+      "postId": "5",
+      "author": "架构师老李",
+      "content": "微服务设计原则总结得很好，对我们团队很有启发。",
+      "date": "2024-01-21 09:15",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235cb85c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E李%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "7",
+      "postId": "6",
+      "author": "运维工程师",
+      "content": "Docker部署经验分享得很实用，感谢作者！",
+      "date": "2024-01-19 11:25",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E运%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "8",
+      "postId": "7",
+      "author": "数据库管理员",
+      "content": "Redis缓存策略分析得很到位，特别是缓存穿透解决方案。",
+      "date": "2024-01-13 15:40",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3ED%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "9",
+      "postId": "8",
+      "author": "异步编程爱好者",
+      "content": "JavaScript异步编程发展历程梳理得很清楚，收藏了！",
+      "date": "2024-01-09 17:30",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235bc0de'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3E异%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "10",
+      "postId": "9",
+      "author": "Go语言开发者",
+      "content": "Goroutine和Channel的实例很生动，容易理解。",
+      "date": "2024-01-04 13:20",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EG%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "11",
+      "postId": "10",
+      "author": "AI学习者",
+      "content": "机器学习入门的好文章，理论与实践结合得很好。",
+      "date": "2023-12-26 16:45",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23d9534f'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EA%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "12",
+      "postId": "11",
+      "author": "CSS布局专家",
+      "content": "Grid布局的复杂示例讲解得很详细，终于掌握了这个布局方式。",
+      "date": "2024-01-23 10:15",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%235cb85c'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "13",
+      "postId": "12",
+      "author": "K8s运维",
+      "content": "Kubernetes在生产环境的部署要点总结得很实用。",
+      "date": "2024-01-20 14:20",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EK%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "14",
+      "postId": "13",
+      "author": "NoSQL爱好者",
+      "content": "MongoDB聚合管道的使用场景分析得很到位。",
+      "date": "2024-01-17 11:30",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EN%3C/text%3E%3C/svg%3E"
+    },
+    {
+      "id": "15",
+      "postId": "14",
+      "author": "Vue开发者",
+      "content": "Composition API的逻辑复用方案很棒，解决了组件间状态共享的难题。",
+      "date": "2024-01-15 09:45",
+      "authorAvatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='15' font-weight='bold'%3EV%3C/text%3E%3C/svg%3E"
     }
   ],
   "users": [
     {
+      "id": "0",
+      "username": "游客",
+      "email": "",
+      "password": "",
+      "bio": "",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23009688'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E墨%3C/text%3E%3C/svg%3E",
+      "postsCount": 0,
+      "followersCount": 0,
+      "followingCount": 0,
+      "createdAt": ""
+    },
+    {
       "id": "1",
       "username": "墨语",
       "email": "mo@example.com",
-      "password": "hashed_password_here",
+      "password": "mo123456",
       "bio": "全栈开发者，专注于Web技术分享",
       "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23009688'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E墨%3C/text%3E%3C/svg%3E",
       "postsCount": 42,
       "followersCount": 128,
       "followingCount": 64,
       "createdAt": "2023-05-15 10:30:00"
+    },
+    {
+      "id": "2",
+      "username": "前端小白",
+      "email": "frontend@example.com",
+      "password": "frontend123",
+      "bio": "热爱前端开发的新手",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%235bc0de'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E前%3C/text%3E%3C/svg%3E",
+      "postsCount": 5,
+      "followersCount": 23,
+      "followingCount": 42,
+      "createdAt": "2023-08-20 14:25:00"
+    },
+    {
+      "id": "3",
+      "username": "后端老手",
+      "email": "backend@example.com",
+      "password": "backend123",
+      "bio": "专注后端架构与性能优化",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E后%3C/text%3E%3C/svg%3E",
+      "postsCount": 18,
+      "followersCount": 87,
+      "followingCount": 35,
+      "createdAt": "2023-03-10 09:15:00"
+    },
+    {
+      "id": "4",
+      "username": "数据分析师",
+      "email": "data@example.com",
+      "password": "data123",
+      "bio": "数据挖掘与可视化专家",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23d9534f'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E数%3C/text%3E%3C/svg%3E",
+      "postsCount": 12,
+      "followersCount": 65,
+      "followingCount": 28,
+      "createdAt": "2023-07-05 16:40:00"
+    },
+    {
+      "id": "5",
+      "username": "运维专家",
+      "email": "ops@example.com",
+      "password": "ops123",
+      "bio": "DevOps实践者，云原生爱好者",
+      "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E运%3C/text%3E%3C/svg%3E",
+      "postsCount": 8,
+      "followersCount": 54,
+      "followingCount": 41,
+      "createdAt": "2023-06-12 11:30:00"
     }
   ],
   "notifications": [
     {
       "id": "1",
+      "userId": "1",
       "title": "新评论通知",
       "content": "您的文章《Vue3响应式原理》收到了新的评论",
       "time": "2024-01-15 14:30",
@@ -119,6 +440,7 @@
     },
     {
       "id": "2",
+      "userId": "1",
       "title": "系统消息",
       "content": "您的文章《Node.js性能优化》已被推荐至首页",
       "time": "2024-01-14 09:20",
@@ -126,10 +448,43 @@
     },
     {
       "id": "3",
+      "userId": "1",
       "title": "关注提醒",
       "content": "用户张三关注了您",
       "time": "2024-01-13 16:45",
       "read": true
+    },
+    {
+      "id": "4",
+      "userId": "2",
+      "title": "点赞通知",
+      "content": "您的文章《CSS Grid布局》获得了新的点赞",
+      "time": "2024-01-22 10:15",
+      "read": false
+    },
+    {
+      "id": "5",
+      "userId": "3",
+      "title": "回复通知",
+      "content": "用户墨语回复了您的评论",
+      "time": "2024-01-21 15:30",
+      "read": false
+    },
+    {
+      "id": "6",
+      "userId": "4",
+      "title": "系统更新",
+      "content": "博客平台已更新至最新版本，新增多项功能",
+      "time": "2024-01-20 08:00",
+      "read": true
+    },
+    {
+      "id": "7",
+      "userId": "5",
+      "title": "私信通知",
+      "content": "用户后端老手给您发送了一条私信",
+      "time": "2024-01-19 17:45",
+      "read": false
     }
   ]
 }

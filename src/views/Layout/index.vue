@@ -9,28 +9,41 @@
           </h1>
           <nav class="main-navigation">
             <router-link to="/" class="nav-link" active-class="active">首页</router-link>
-            <router-link to="/dashboard" class="nav-link" active-class="active">仪表盘</router-link>
-            <router-link to="/articles" class="nav-link" active-class="active">我的文章</router-link>
-            <router-link to="/favorites" class="nav-link" active-class="active">收藏</router-link>
-            <router-link to="/profile" class="nav-link" active-class="active">个人资料</router-link>
+            <router-link to="/blog" class="nav-link" active-class="active">博文</router-link>
+            <router-link to="/category" class="nav-link" active-class="active">分类</router-link>
+            <router-link to="/archive" class="nav-link" active-class="active">归档</router-link>
+            <router-link to="/about" class="nav-link" active-class="active">关于</router-link>
             
-            <!-- 用户下拉菜单 -->
-            <div class="user-menu">
-              <el-dropdown>
-                <span class="el-dropdown-link">
-                  <img :src="user.avatar" alt="头像" class="avatar">
-                  {{ user.username }}
-                  <el-icon><arrow-down /></el-icon>
-                </span>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="goToProfile">个人资料</el-dropdown-item>
-                    <el-dropdown-item @click="goToSettings">设置</el-dropdown-item>
-                    <el-dropdown-item @click="handleLogout" divided>退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
+            <!-- 登录状态下的导航项 -->
+            <template v-if="userStore.token === '1'">
+              <router-link to="/dashboard" class="nav-link" active-class="active">仪表盘</router-link>
+              <router-link to="/articles" class="nav-link" active-class="active">我的文章</router-link>
+              <router-link to="/favorites" class="nav-link" active-class="active">收藏</router-link>
+              <router-link to="/profile" class="nav-link" active-class="active">个人资料</router-link>
+              
+              <!-- 用户下拉菜单 -->
+              <div class="user-menu">
+                <el-dropdown>
+                  <span class="el-dropdown-link">
+                    <img :src="user.avatar" alt="头像" class="avatar">
+                    {{ user.username }}
+                    <el-icon><arrow-down /></el-icon>
+                  </span>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="goToProfile">个人资料</el-dropdown-item>
+                      <el-dropdown-item @click="goToSettings">设置</el-dropdown-item>
+                      <el-dropdown-item @click="handleLogout" divided>退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
+              </div>
+            </template>
+            
+            <!-- 非登录状态下的导航项 -->
+            <template v-else>
+              <router-link to="/login" class="nav-link login-btn">登录</router-link>
+            </template>
           </nav>
           <div class="search-container">
             <input type="text" class="search-input" placeholder="搜索博客..." />
@@ -42,22 +55,53 @@
       <!-- 主体内容 -->
       <div class="main-body">
         <div class="content-inner">
-          <!-- 左侧内容区域 -->
+          <!-- 左侧文章列表 -->
           <div class="content-left">
-            <!-- 主内容区 -->
-            <section class="main-content">
-              <router-view />
-            </section>
-            
+            <!-- 文章列表 -->
+            <div class="post-list">
+              <article v-for="post in getCurrentPagePosts()" :key="post.id" class="post-item">
+                <div class="post-header">
+                  <h2 class="post-title">
+                    <router-link :to="`/post/${post.id}`" class="post-link">{{ post.title }}</router-link>
+                  </h2>
+                  <div class="post-meta">
+                    <span class="meta-date">发布于 {{ formatDate(post.publishDate) }}</span>
+                    <span class="meta-category">
+                      <router-link :to="`/category/${post.category.toLowerCase()}`" class="category-link">{{ post.category }}</router-link>
+                    </span>
+                    <span class="meta-views">阅读({{ post.views }})</span>
+                    <span class="meta-comments">评论({{ post.commentsCount }})</span>
+                    <span class="meta-likes">推荐({{ post.likes }})</span>
+                  </div>
+                </div>
+                <div class="post-summary">
+                  {{ post.content.slice(0, 100) }}...
+                </div>
+                <div class="post-footer">
+                  <div class="post-tags">
+                    <router-link v-for="tag in post.tags" :key="tag" :to="`/tag/${tag.toLowerCase()}`" class="tag">{{ tag }}</router-link>
+                  </div>
+                  <router-link :to="`/post/${post.id}`" class="read-more">阅读全文 »</router-link>
+                </div>
+              </article>
+            </div>
+
             <!-- 分页 -->
-            <div class="pagination-container" v-if="showPagination">
-              <div class="pagination">
+            <div class="pagination-container">
+              <div class="pagination" v-if="totalPages > 1">
+                <a
+                  v-for="page in totalPages"
+                  :key="page"
+                  href="#"
+                  @click.prevent="changePage(page)"
+                  class="page-link"
+                  :class="{ 'page-current': page === currentPage }"
+                >
+                  {{ page }}
+                </a>
+              </div>
+              <div class="pagination" v-else>
                 <span class="page-current">1</span>
-                <a href="/page/2" class="page-link">2</a>
-                <a href="/page/3" class="page-link">3</a>
-                <a href="/page/4" class="page-link">4</a>
-                <a href="/page/5" class="page-link">5</a>
-                <a href="/page/2" class="page-next">下一页</a>
               </div>
             </div>
           </div>
@@ -69,8 +113,11 @@
               <h3 class="sidebar-title">博主信息</h3>
               <div class="author-info">
                 <div class="author-avatar">
-                  <img :src="user.avatar" 
-                       alt="博主头像" class="avatar-img" />
+                  <img
+                    :src="user.avatar"
+                    alt="博主头像"
+                    class="avatar-img"
+                  />
                 </div>
                 <div class="author-details">
                   <h4 class="author-name">{{ user.username }}</h4>
@@ -95,38 +142,52 @@
 
             <!-- 文章分类 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">文章分类</h3>
+              <h3 class="sidebar-title">热门文章分类</h3>
               <ul class="category-list">
-                <li v-for="category in categories" :key="category.id" class="category-item">
-                  <a :href="`/category/${category.id}`" class="category-link">
+                <li v-for="category in categories.slice(0, 3)" :key="category.id" class="category-item">
+                  <router-link :to="`/category/${category.id}`" class="category-link">
                     <span class="category-name">{{ category.name }}</span>
                     <span class="category-count">({{ category.count }})</span>
-                  </a>
+                  </router-link>
                 </li>
               </ul>
             </div>
 
             <!-- 最新评论 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">最新评论</h3>
+              <h3 class="sidebar-title">最新热门评论</h3>
               <ul class="comment-list">
-                <li v-for="comment in recentComments" :key="comment.id" class="comment-item">
+                <li v-for="comment in recentComments.slice(0, 3)" :key="comment.id" class="comment-item">
                   <div class="comment-content">
                     <span class="comment-author">{{ comment.author }}</span> 发表在
-                    <a :href="`/post/${comment.postId}`" class="comment-post">{{ getPostTitleById(comment.postId) }}</a>
+                    <router-link :to="`/post/${comment.postId}`" class="comment-post">{{ getPostTitleById(comment.postId) }}</router-link>
                   </div>
                   <div class="comment-text">{{ comment.content }}</div>
                 </li>
               </ul>
             </div>
 
-            <!-- 功能入口 -->
+            <!-- 登录入口或功能入口 -->
             <div class="sidebar-section login-section">
-              <h3 class="sidebar-title">功能入口</h3>
-              <div class="login-buttons">
-                <router-link to="/editor" class="login-button">写文章</router-link>
-                <router-link to="/settings" class="register-button">设置</router-link>
-              </div>
+              <h3 class="sidebar-title">访问入口</h3>
+              
+              <!-- 登录状态下显示功能入口 -->
+              <template v-if="userStore.token === '1'">
+                <p class="login-prompt">欢迎回来，{{ user.username }}！</p>
+                <div class="login-buttons">
+                  <router-link to="/editor" class="login-button">写文章</router-link>
+                  <router-link to="/settings" class="register-button">设置</router-link>
+                </div>
+              </template>
+              
+              <!-- 非登录状态下显示登录入口 -->
+              <template v-else>
+                <p class="login-prompt">立即登录，发布你的第一篇博客</p>
+                <div class="login-buttons">
+                  <router-link to="/login" class="login-button">登录</router-link>
+                  <router-link to="/register" class="register-button">注册</router-link>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -136,12 +197,12 @@
       <footer class="site-footer">
         <div class="footer-content">
           <div class="footer-links">
-            <a href="/about" class="footer-link">关于本站</a>
-            <a href="/contact" class="footer-link">联系我们</a>
-            <a href="/sitemap" class="footer-link">网站地图</a>
-            <a href="/privacy" class="footer-link">隐私政策</a>
-            <a href="/help" class="footer-link">帮助中心</a>
-            <a href="/rss" class="footer-link">RSS订阅</a>
+            <router-link to="/about" class="footer-link">关于本站</router-link>
+            <router-link to="/contact" class="footer-link">联系我们</router-link>
+            <router-link to="/sitemap" class="footer-link">网站地图</router-link>
+            <router-link to="/privacy" class="footer-link">隐私政策</router-link>
+            <router-link to="/help" class="footer-link">帮助中心</router-link>
+            <router-link to="/rss" class="footer-link">RSS订阅</router-link>
           </div>
           <div class="copyright">
             <p>Copyright © 2024 墨语博客. All Rights Reserved.</p>
@@ -154,11 +215,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage } from 'element-plus'
-import api from '@/utils/request.js'
+import { PostAPI, CategoryAPI, CommentAPI, UserAPI } from '@/apis'
 import { 
   ArrowDown, 
   House, 
@@ -183,11 +244,39 @@ const user = ref({
   articlesCount: 0,
   commentsCount: 0
 })
+const currentPage = ref(1)
 
-// 根据当前路由决定是否显示分页
-const showPagination = computed(() => {
-  return ['/dashboard', '/articles'].includes(router.currentRoute.value.path)
-})
+// 获取文章标题的方法
+const getPostTitleById = (postId) => {
+  const post = posts.value.find(p => p.id === postId)
+  return post ? post.title : '未知文章'
+}
+
+// 格式化日期
+const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return ` ${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
+}
+
+// 前端自行分页，每页显示 5 条
+const postsPerPage = 5
+
+// 计算总页数
+const totalPages = computed(() => Math.ceil(posts.value.length / postsPerPage))
+
+// 显示当前页的文章数据
+const getCurrentPagePosts = () => {
+  const startIndex = (currentPage.value - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  return posts.value.slice(startIndex, endIndex)
+}
+
+// 切换页面
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+  }
+}
 
 // 跳转到个人资料页
 const goToProfile = () => {
@@ -206,27 +295,28 @@ const handleLogout = () => {
   router.push('/login')
 }
 
-// 获取文章标题的方法
-const getPostTitleById = (postId) => {
-  const post = posts.value.find(p => p.id === postId)
-  return post ? post.title : '未知文章'
-}
-
 // 从 API 获取数据
 const fetchData = async () => {
   try {
     // 获取文章列表
-    posts.value = await api.get('/posts')
+    posts.value = await PostAPI.getAllPosts()
     
     // 获取分类列表
-    categories.value = await api.get('/categories')
+    categories.value = await CategoryAPI.getAllCategories()
     
     // 获取最新评论
-    recentComments.value = await api.get('/comments')
+    recentComments.value = await CommentAPI.getAllComments()
     
-    // 获取用户信息
-    const userData = await api.get('/users/1')
-    user.value = userData
+    // 使用 store 中的用户信息，如果不存在则获取默认用户
+    if (userStore.user) {
+      user.value = userStore.user
+    } else {
+      const userData = await UserAPI.getUserById(0) // 获取ID为0的默认用户
+      user.value = userData
+    }
+    
+    // 重置到第一页
+    currentPage.value = 1
   } catch (error) {
     console.error('获取数据失败:', error)
   }
@@ -234,17 +324,27 @@ const fetchData = async () => {
 
 onMounted(() => {
   fetchData()
+  
+  // 监听用户store的变化，确保用户信息是最新的
+  const updateUserFromStore = () => {
+    if (userStore.user) {
+      user.value = userStore.user
+    }
+  }
+  
+  // 手动调用一次以确保当前用户信息正确
+  updateUserFromStore()
 })
 </script>
 
 <style scoped>
 /* ------------------------
    完整替换样式（Scoped）
-   说明：.cnblogs-fullscreen 作为一个“视口级”固定滚动容器，
+   说明：.cnblogs-fullscreen 作为一个"视口级"固定滚动容器，
    因此不会受 body margin 的影响，适用于必须使用 scoped 的场景。
    ------------------------ */
 
-/* 组件级“reset” —— 仅作用于组件内元素（不会影响全局 html/body） */
+/* 组件级"reset" —— 仅作用于组件内元素（不会影响全局 html/body） */
 .cnblogs-fullscreen {
   /* 使容器填满视口，忽略 body 的默认 margin/填充导致的空白 */
   position: fixed;
@@ -447,6 +547,71 @@ onMounted(() => {
   min-height: 500px;
 }
 
+/* 文章列表样式 */
+.post-item {
+  border-bottom: 1px solid #eee;
+  padding: 20px 0;
+  width: 100%;
+}
+.post-item:last-child { border-bottom:none; }
+
+.post-header { margin-bottom: 15px; }
+.post-title { margin-bottom: 8px; }
+.post-link {
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.post-link:hover { color: #009688; text-decoration: underline; }
+
+.post-meta {
+  color: #95a5a6;
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.post-meta a { color: #009688; text-decoration: none; }
+.post-meta a:hover { text-decoration: underline; }
+
+.post-summary {
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 15px;
+  font-size: 15px;
+  text-align: justify;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+.post-tags { display:flex; flex-wrap:wrap; gap:5px; }
+
+.tag {
+  background-color: #f1f8ff;
+  color: #009688;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+.tag:hover { background-color:#009688; color:white; }
+
+.read-more {
+  color: #009688;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.read-more:hover { text-decoration: underline; }
+
 /* 分页 */
 .pagination-container {
   margin-top: 30px;
@@ -621,6 +786,11 @@ onMounted(() => {
 /* 功能入口 */
 .login-section {
   text-align: center;
+}
+.login-prompt {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+  font-size: 14px;
 }
 .login-buttons {
   display: flex;
