@@ -17,6 +17,12 @@ const api = axios.create({
 api.interceptors.request.use(config => {
   const token = useUserStore().token
   if (token) config.headers.Authorization = `Bearer ${token}`
+  
+  // 如果在GitHub Pages环境下，确保请求的是JSON文件
+  if (isGitHubPages && config.url && !config.url.endsWith('.json')) {
+    config.url += '.json';
+  }
+  
   return config
 })
 
