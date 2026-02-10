@@ -41,7 +41,7 @@
     "email": "backend@example.com",
     "password": "backend123",
     "bio": "专注后端架构与性能优化",
-    "avatar": "data:image.svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E后%3C/text%3E%3C/svg%3E",
+    "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23428bca'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E后%3C/text%3E%3C/svg%3E",
     "postsCount": 18,
     "followersCount": 87,
     "followingCount": 35,
@@ -53,7 +53,7 @@
     "email": "data@example.com",
     "password": "data123",
     "bio": "数据挖掘与可视化专家",
-    "avatar": "data:image.svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23d9534f'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E数%3C/text%3E%3C/svg%3E",
+    "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23d9534f'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E数%3C/text%3E%3C/svg%3E",
     "postsCount": 12,
     "followersCount": 65,
     "followingCount": 28,
@@ -65,10 +65,12 @@
     "email": "ops@example.com",
     "password": "ops123",
     "bio": "DevOps实践者，云原生爱好者",
-    "avatar": "data:image.svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E运%3C/text%3E%3C/svg%3E",
+    "avatar": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23f0ad4e'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='30' font-weight='bold'%3E运%3C/text%3E%3C/svg%3E",
     "postsCount": 8,
     "followersCount": 54,
     "followingCount": 41,
     "createdAt": "2023-06-12 11:30:00"
   }
 ]
+
+
