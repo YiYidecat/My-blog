@@ -1,40 +1,53 @@
-# Vue 3 + Vite
+# Vue 3 + Vite 博客系统
+
+这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。
+
+## 本地开发
+
 ！！！！！！！！注意：运行项目前请先启动后端API服务：json-server --watch db.json --port 3000。
 
------------------------------------------------------------------------------------------------------
-## 后端数据接口
-# 1. 安装依赖
+### 1. 安装依赖
+```bash
 npm install -g json-server
+npm install
+```
 
-# 2. 创建 db.json 文件（内容见下方）
-touch db.json
+### 2. 启动后端API服务
+```bash
+# 方法1：使用npm脚本
+npm run server
 
-# 3. 复制以下内容到 db.json
-{
-  "posts": [
-    {
-      "id": 1,
-      "title": "Vue3响应式原理深度解析",
-      "content": "Vue3使用Proxy替代Object.defineProperty...",
-      "category": "前端",
-      "author": "张三",
-      "likes": 15,
-      "comments": [
-        { "id": 101, "content": "讲得透彻！" },
-        { "id": 102, "content": "需要源码链接" }
-      ]
-    }
-  ],
-  "users": [
-    { "id": 1, "username": "user1", "password": "123456", "avatar": "https://example.com/avatar1.jpg" }
-  ],
-  "comments": []
-}
-
-# 4. 启动API服务
+# 方法2：手动启动
 json-server --watch db.json --port 3000
+```
 
------------------------------------------------------------------------------------------------------
+### 3. 启动前端开发服务器
+```bash
+npm run dev
+```
+
+## 部署到 GitHub Pages
+
+### 方式1：使用 GitHub Actions（推荐）
+
+1. 确保你的仓库名为 `yourusername.github.io` 或者 `your-repo-name`
+2. 将代码推送到 `master` 分支
+3. GitHub Actions 会在 `.github/workflows/deploy.yml` 中自动构建并部署
+
+### 方式2：手动部署
+
+1. 构建项目：
+```bash
+npm run build
+```
+
+2. 将 `dist` 目录中的内容部署到 GitHub Pages
+
+### 注意事项
+- 本项目使用 Hash 路由以兼容 GitHub Pages
+- API 请求会根据环境自动切换到适当的端点
+- 在 GitHub Pages 上，API 数据来自静态 JSON 文件
+
 ## 项目结构
 src/
 ├── api/               # 接口请求
@@ -55,9 +68,7 @@ src/
 │   └── index.js       # 路由配置
 └── App.vue            # 根组件
 
------------------------------------------------------------------------------------------------------
-## 业务逻辑
-# 墨语博客开发指南
+## 墨语博客开发指南
 
 ## 1. 登录功能（需实现）
 - **API**: `POST /login` (body: { username, password })

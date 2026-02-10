@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Vue3响应式原理深度解析",
+    "content": "Vue3使用Proxy替代Object.defineProperty...",
+    "category": "前端",
+    "author": "张三",
+    "likes": 15,
+    "comments": [
+      { "id": 101, "content": "讲得透彻！" },
+      { "id": 102, "content": "需要源码链接" }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "React Hooks最佳实践",
+    "content": "React Hooks自发布以来彻底改变了函数组件的开发方式...",
+    "category": "前端",
+    "author": "李四",
+    "likes": 23,
+    "comments": []
+  }
+]

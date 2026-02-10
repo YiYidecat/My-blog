@@ -9,5 +9,15 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, 'src'),
     }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+  },
+  server: {
+    host: true,
+    port: 3000,
+    open: true,
   }
 })

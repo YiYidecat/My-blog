@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '../views/Layout/index.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/Login/index.vue'
@@ -105,7 +105,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(), // 使用 Hash 模式，适用于 GitHub Pages
   routes
 })
 
