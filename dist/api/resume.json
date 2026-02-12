@@ -1,0 +1,100 @@
+{
+  "education": [
+    {
+      "degree": "Bachelor's Degree in Geographic Information Science",
+      "institution": "Nanjing University of Information Science & Technology (Double First-Class University)",
+      "period": "Sep. 2020 - Jul. 2024",
+      "location": "Nanjing, China",
+      "details": [
+        "Studied Geographic Information Science at a prestigious Double First-Class University"
+      ]
+    },
+    {
+      "degree": "Master's Degree in Electronic Information",
+      "institution": "China University of Geosciences (Wuhan) (211 Project, Double First-Class University)",
+      "period": "Sep. 2024 - Present",
+      "location": "Wuhan, China",
+      "details": [
+        "Currently pursuing Master's degree at a prestigious 211 Project and Double First-Class University"
+      ]
+    }
+  ],
+  "projectExperience": [
+    {
+      "title": "FreshBuy E-commerce Platform",
+      "role": "Developer",
+      "period": "Aug. 2025",
+      "company": "Personal Project",
+      "description": "An e-commerce platform built with Vue3. The platform implements a complete e-commerce process including product display, product detail pages, shopping cart, order and payment.",
+      "technologies": ["Vue3", "TypeScript", "Pinia", "Vite", "Vue Router", "Element Plus", "Axios"],
+      "achievements": [
+        "Implemented global state management and persistence of user state and local shopping cart using Pinia",
+        "Utilized Vue Router for routing control and lazy loading",
+        "Handled permission authentication and token refresh uniformly with Axios Interceptors"
+      ]
+    },
+    {
+      "title": "KuaiYiDian - Food & Beverage Enterprise Takeaway Platform",
+      "role": "Full Stack Developer",
+      "period": "Dec. 2024",
+      "company": "Personal Project",
+      "description": "An online takeaway ordering system designed for small and medium-sized food & beverage enterprises based on the Spring Boot framework. It enables end-to-end management from dish management, store operation, online ordering, order processing, intelligent dispatch, data statistics, to staff management.",
+      "technologies": ["Spring Boot", "MyBatis", "MySQL", "Redis", "WebSocket", "JWT", "Vue.js", "WeChat Mini Program", "HttpClient", "Alibaba Cloud OSS", "WeChat Pay"],
+      "achievements": [
+        "Adopted a layered architecture design and implemented front-end and back-end separation",
+        "Provided core API interfaces required for the merchant management backend (PC Web) and the user client (WeChat Mini Program)",
+        "Integrated Alibaba Cloud OSS and WeChat Pay for enhanced functionality"
+      ]
+    }
+  ],
+  "researchExperience": [
+    {
+      "title": "Development and Validation of a Novel Airborne Photon-Counting LiDAR for Coastal Mapping",
+      "role": "Researcher",
+      "period": "Sep. 2025",
+      "institution": "Submitted to Geophysical Research Letters",
+      "description": "Conducted R&D on a novel, lightweight photon-counting LiDAR system for UAV-based integrated coastal and bathymetric mapping. Proposed a new Scanning Geometry and Density Weighted Filter (SGDWF) algorithm to enhance signal extraction in noisy coastal environments.",
+      "publications": [
+        "Manuscript submitted to Geophysical Research Letters"
+      ],
+      "achievements": [
+        "Developed the SGDWF algorithm to efficiently isolate signal photons from background noise in complex coastal settings",
+        "Validated system performance at Bei Reef, China, achieving high-accuracy bathymetry with R² up to 0.990 and RMSE as low as 0.217 m against reference data"
+      ]
+    },
+    {
+      "title": "A Novel Refraction Correction Method for Airborne Photon-Counting LiDAR Bathymetry",
+      "role": "Researcher",
+      "period": "Dec. 2025",
+      "institution": "Submitted to Geophysical Research Letters",
+      "description": "Addressed the challenge of water refraction in nearshore bathymetry using the GeologyObserver-1 photon-counting LiDAR system. Developed a rigorous refraction-correction method incorporating a partition-area JONSWAP wave model to significantly improve measurement accuracy.",
+      "publications": [
+        "Manuscript submitted to Geophysical Research Letters"
+      ],
+      "achievements": [
+        "Proposed and implemented a novel refraction-correction model using a partition-area JONSWAP approach to quantify and correct depth-dependent displacement",
+        "Demonstrated notable improvement in bathymetric accuracy post-correction, achieving best-case results of 0.203 m RMSE, 0.992 R², and a slope of 0.988 in the study area"
+      ]
+    }
+  ],
+  "additionalSkills": {
+    "technicalSkills": [
+      "JavaScript",
+      "Java",
+      "C#",
+      "Vue3 + TypeScript + Pinia + Vite + Vue Router + Element Plus + Axios",
+      "Spring Boot + Redis + MySQL",
+      "WeChat Mini Program Development",
+      "Git Version Control",
+      "Postman API Testing"
+    ],
+    "languages": [
+      "English: CET-6 (541), CET-4 (551), CET-SET Band B (Spoken English Test)",
+      "Chinese: Native"
+    ],
+    "certifications": [
+      "National Computer Rank Examination Level 2 Certificate (C Language)",
+      "Proficient in Microsoft Office software"
+    ]
+  }
+}

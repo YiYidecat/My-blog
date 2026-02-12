@@ -2,8 +2,15 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '../views/Layout/index.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/Login/index.vue'
+import ResumePage from '@/components/ResumePage.vue' // 新增简历页面
 
 const routes = [
+  // 添加新的简历页面路由
+  {
+    path: '/resume',
+    name: 'Resume',
+    component: ResumePage
+  },
   // 登录路由
   {
     path: '/login',

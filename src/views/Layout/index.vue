@@ -43,6 +43,7 @@
             <!-- 非登录状态下的导航项 -->
             <template v-else>
               <router-link to="/login" class="nav-link login-btn">登录</router-link>
+              <router-link to="/resume" class="cta-button">View My Resume</router-link>  <!-- 添加简历链接 -->
             </template>
           </nav>
           <div class="search-container">
@@ -447,6 +448,24 @@ onMounted(() => {
   font-weight: bold;
   background-color: rgba(0, 150, 136, 0.1);
 }
+
+/*简历部分样式*/
+.cta-button {
+  display: inline-block;
+  background: white;
+  color: #667eea;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 5px;
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+}
+
 
 /* 搜索 */
 .search-container {
