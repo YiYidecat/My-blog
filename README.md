@@ -30,9 +30,11 @@ npm run dev
 
 ### 方式1：使用 GitHub Actions（推荐）
 
-1. 确保你的仓库名为 `yourusername.github.io` 或者 `your-repo-name`
+1. 确保仓库名为 `yourusername.github.io` 或者 `your-repo-name`
 2. 将代码推送到 `master` 分支
 3. GitHub Actions 会在 `.github/workflows/deploy.yml` 中自动构建并部署
+## 注意！！！！
+## 以后若是需要修改静态数据，只需要在master分支下对public->api下的json文件进行修改即可，修改后npm run build然后提交到远程仓库会自动触发deploy.yml文件部署流程，并更新gh-pages分支上的数据。
 
 ### 方式2：手动部署
 
