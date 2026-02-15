@@ -2,7 +2,7 @@
   <div class="resume-container">
     <div class="resume-header">
       <h1 class="resume-title">Professional Resume</h1>
-      <p class="resume-subtitle">Showcasing my professional journey and skills</p>
+      <p class="resume-subtitle">Showing my professional journey and skills</p>
     </div>
 
     <!-- Education Section -->
@@ -186,13 +186,13 @@ export default {
     },
     
     downloadResume() {
-      alert("Resume download functionality would be implemented here");
+      alert("Resume download functionality would be implemented soon");
       // In a real implementation, you'd generate and download a PDF
     },
     
     contactMe() {
       // Open email client or contact form
-      window.location.href = "mailto:your-email@example.com";
+      window.location.href = "mailto:18305220682@163.com";
     },
     
     filterProjectsBySkill(skill) {

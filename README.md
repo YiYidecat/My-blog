@@ -1,6 +1,9 @@
 # Vue 3 + Vite 博客系统
 
-这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。
+1. 这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。该项目也搭载了一个简单的展示个人简历的入口，用户可以在博客系统中查看和下载简历。
+2. 该项目有两种调取数据的方式，当在本地运行的时候，数据会从本地的 `json-server` 获取；当部署到 GitHub Pages 上时，数据会从静态的 JSON 文件获取。具体的配置看request.js文件中的baseURL配置。
+3. 项目使用了 Hash 路由以兼容 GitHub Pages 的部署方式，API 请求会根据环境自动切换到适当的端点。在 GitHub Pages 上，API 数据来自静态 JSON 文件。
+4. 你可以查看项目的[在线演示](https://yiyidecat.github.io/My-blog/)。
 
 ## 本地开发
 
