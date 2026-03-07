@@ -270,6 +270,24 @@
       "views": 0,
       "commentsCount": 0,
       "updatedAt": "2026-03-07T12:01:48.327Z"
+    },
+    {
+      "id": "3",
+      "title": "tryFuntion",
+      "content": "尝试路由配置是否有问题",
+      "xmlContent": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<akomaNtoso xmlns=\"http://docs.oasis-open.org/legaldocml/ns/akn/3.0\">\n  <document type=\"bill\">\n    <meta>\n      <identification source=\"#source\">\n        <FRBRWork>\n          <FRBRthis value=\"/akn/un/document/\"/>\n          <FRBRuri value=\"/akn/un/document\"/>\n          <FRBRdate date=\"2026-03-07\" name=\"Generation\"/>\n          <FRBRauthor href=\"#author\" as=\"#author\"/>\n        </FRBRWork>\n        <FRBRExpression>\n          <FRBRthis value=\"/akn/un/document/eng@2026-03-07;_generation\"/>\n          <FRBRuri value=\"/akn/un/document/eng@2026-03-07\"/>\n          <FRBRdate date=\"2026-03-07\" name=\"Generation\"/>\n          <FRBRauthor href=\"#author\" as=\"#author\"/>\n        </FRBRExpression>\n        <FRBRManifestation>\n          <FRBRthis value=\"/akn/un/document/eng@2026-03-07;generation.xml\"/>\n          <FRBRuri value=\"/akn/un/document/eng@2026-03-07.akn\"/>\n          <FRBRdate date=\"2026-03-07\" name=\"Generation\"/>\n        </FRBRManifestation>\n      </identification>\n      <publication date=\"2026-03-07\" name=\"\" showAs=\"\"/>\n      <classification source=\"#source\">\n        <keyword value=\"\" showAs=\"\" dictionary=\"\"/>\n      </classification>\n      <lifecycle source=\"#source\">\n        <eventRef source=\"#source\" date=\"2026-03-07\" type=\"generation\"/>\n      </lifecycle>\n      <references source=\"#source\">\n        <TLCPerson id=\"author\" href=\"#author\" showAs=\"Author\"/>\n      </references>\n    </meta>\n    <body>\n      <section id=\"section_1\">\n        <num>1</num>\n        <heading>Section Title</heading>\n        <paragraph id=\"para_1\">\n          <content>\n            <p>开始输入您的内容...</p>\n          </content>\n        </paragraph>\n      </section>\n    </body>\n  </document>\n</akomaNtoso>",
+      "category": "DevOps",
+      "tags": [
+        "Node.js",
+        "React",
+        "Vue"
+      ],
+      "author": "前端小白",
+      "publishDate": "2026-03-07",
+      "likes": 0,
+      "views": 0,
+      "commentsCount": 0,
+      "updatedAt": "2026-03-07T12:28:20.833Z"
     }
   ],
   "categories": [

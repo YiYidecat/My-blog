@@ -9,16 +9,45 @@
         <div class="content-inner">
           <!-- 左侧内容区域 -->
           <div class="content-left">
-            <div class="article-main-container">
-              <router-view />
+            <div class="dashboard-content">
+              <h2>欢迎来到您的仪表盘，{{ user.username }}！</h2>
+              <p>这里是您的个人空间，您可以管理您的文章、查看统计信息等。</p>
+              
+              <div class="dashboard-stats">
+                <div class="stat-card">
+                  <h3>{{ user.articlesCount || 0 }}</h3>
+                  <p>文章数量</p>
+                </div>
+                <div class="stat-card">
+                  <h3>{{ user.postsCount || 0 }}</h3>
+                  <p>随笔数量</p>
+                </div>
+                <div class="stat-card">
+                  <h3>{{ user.commentsCount || 0 }}</h3>
+                  <p>评论数量</p>
+                </div>
+                <div class="stat-card">
+                  <h3>{{ user.viewsCount || 0 }}</h3>
+                  <p>总浏览量</p>
+                </div>
+              </div>
+              
+              <div class="dashboard-actions">
+                <!-- <router-link :to="`/dashboard/${userId}/articles`" class="action-btn primary">管理我的文章</router-link> -->
+                <router-link :to="`/dashboard/${userId}/editor/new`" class="action-btn primary">写新文章</router-link>
+                <router-link to="/profile" class="action-btn secondary">编辑个人资料</router-link>
+              </div>
             </div>
+
+            <!-- 子路由出口，用于渲染文章列表、编辑器等内容 -->
+            <router-view />
           </div>
 
           <!-- 右侧边栏 -->
           <div class="sidebar-right">
             <!-- 博主信息 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">博主信息</h3>
+              <h3 class="sidebar-title">个人信息</h3>
               <div class="author-info">
                 <div class="author-avatar">
                   <img
@@ -48,35 +77,41 @@
               </div>
             </div>
 
-            <!-- 文章分类 -->
+            <!-- 快捷操作 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">热门文章分类</h3>
-              <ul class="category-list">
-                <li v-for="category in categories.slice(0, 3)" :key="category.id" class="category-item">
-                  <router-link :to="`/category/${category.id}`" class="category-link">
-                    <span class="category-name">{{ category.name }}</span>
-                    <span class="category-count">({{ category.count }})</span>
-                  </router-link>
+              <h3 class="sidebar-title">快捷操作</h3>
+              <ul class="quick-actions">
+                <li>
+                  <router-link :to="`/dashboard/${userId}/articles`">我的文章</router-link>
+                </li>
+                <li>
+                  <router-link :to="`/dashboard/${userId}/editor/new`">写新文章</router-link>
+                </li>
+                <li>
+                  <router-link to="/profile">个人资料</router-link>
+                </li>
+                <li>
+                  <router-link to="/settings">设置</router-link>
                 </li>
               </ul>
             </div>
 
-            <!-- 最新评论 -->
+            <!-- 最近活动 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">最新热门评论</h3>
-              <ul class="comment-list">
-                <li v-for="comment in recentComments.slice(0, 3)" :key="comment.id" class="comment-item">
-                  <div class="comment-content">
-                    <span class="comment-author">{{ comment.author }}</span> 发表在
-                    <router-link :to="`/post/${comment.postId}`" class="comment-post">{{ getPostTitleById(comment.postId) }}</router-link>
-                  </div>
-                  <div class="comment-text">{{ comment.content }}</div>
+              <h3 class="sidebar-title">最近活动</h3>
+              <ul class="recent-activity">
+                <li v-for="(activity, index) in recentActivities" :key="index" class="activity-item">
+                  <span class="activity-icon">•</span>
+                  <span class="activity-desc">{{ activity.description }}</span>
+                  <span class="activity-time">{{ activity.time }}</span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
+
+
 
       <!-- 页脚 -->
       <Footer />
@@ -85,14 +120,19 @@
 </template>
 
 <script setup>
-// 文章列表主入口,其中包括文章列表模块、文章详情编辑模块还有文章发布模块
 import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
-import { PostAPI, CategoryAPI, CommentAPI, UserAPI } from '@/apis'
+import { PostAPI, UserAPI } from '@/apis'
 import Header from '@/views/Layout/components/Header.vue'
 import Footer from '@/views/Layout/components/Footer.vue'
 
+const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
+
+// 从路由参数获取用户ID
+const userId = route.params.userId
 
 // 响应式数据
 const user = ref({
@@ -101,55 +141,181 @@ const user = ref({
   bio: '暂无简介',
   postsCount: 0,
   articlesCount: 0,
-  commentsCount: 0
+  commentsCount: 0,
+  viewsCount: 0
 })
 
-const categories = ref([])
-const recentComments = ref([])
+const recentActivities = ref([
+  { description: '发布了新文章', time: '2小时前' },
+  { description: '收到了新评论', time: '1天前' },
+  { description: '更新了个人资料', time: '3天前' }
+])
 
-// 获取文章标题的方法
-const getPostTitleById = (postId) => {
-  // 这个方法将在获取到文章列表后使用
-  return '文章标题'
-}
-
-// 从 API 获取数据
-const fetchData = async () => {
+// 获取用户信息
+const fetchUserInfo = async () => {
   try {
-    // 使用 store 中的用户信息，如果不存在则获取默认用户
     if (userStore.user) {
+      // 使用store中的用户信息
       user.value = { ...userStore.user }
     } else {
-      const userData = await UserAPI.getUserById(0) // 获取ID为0的默认用户
+      // 如果store中没有用户信息，尝试从API获取
+      const userData = await UserAPI.getUserById(userId)
       user.value = userData
+      userStore.user = userData // 同步到store
     }
-    
-    // 获取分类列表
-    categories.value = await CategoryAPI.getAllCategories()
-    
-    // 获取最新评论
-    recentComments.value = await CommentAPI.getAllComments()
   } catch (error) {
-    console.error('获取数据失败:', error)
+    console.error('获取用户信息失败:', error)
+    // 设置默认用户信息
+    user.value = {
+      username: '用户',
+      avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      bio: '暂无简介',
+      postsCount: 0,
+      articlesCount: 0,
+      commentsCount: 0,
+      viewsCount: 0
+    }
   }
 }
 
 onMounted(() => {
-  fetchData()
-  
-  // 监听用户store的变化，确保用户信息是最新的
-  const updateUserFromStore = () => {
-    if (userStore.user) {
-      user.value = { ...userStore.user }
-    }
-  }
-  
-  // 手动调用一次以确保当前用户信息正确
-  updateUserFromStore()
+  fetchUserInfo()
 })
 </script>
 
 <style scoped>
+.dashboard-content {
+  padding: 20px 0;
+}
+
+.dashboard-content h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 2em;
+  color: #009688;
+}
+
+.stat-card p {
+  margin: 5px 0 0 0;
+  color: #6c757d;
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+
+.action-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.action-btn.primary {
+  background-color: #009688;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background-color: #00796b;
+}
+
+.action-btn.secondary {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #e9ecef;
+}
+
+.action-btn.secondary:hover {
+  background-color: #e9ecef;
+}
+
+.quick-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quick-actions li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.quick-actions li:last-child {
+  border-bottom: none;
+}
+
+.quick-actions a {
+  text-decoration: none;
+  color: #009688;
+  display: block;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.quick-actions a:hover {
+  background-color: #f0f0f0;
+  color: #00796b;
+}
+
+.recent-activity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  color: #009688;
+  margin-right: 8px;
+}
+
+.activity-desc {
+  flex: 1;
+}
+
+.activity-time {
+  color: #999;
+  font-size: 12px;
+}
+
+/* 以下是从原始Layout复制的样式 */
 .cnblogs-fullscreen {
   position: fixed;
   inset: 0;
@@ -206,13 +372,6 @@ onMounted(() => {
   padding: 20px;
   margin: 0;
   width: 100%;
-  box-sizing: border-box;
-}
-
-.article-main-container {
-  width: 100%;
-  min-height: calc(100vh - 120px); /* 减去头部和底部的高度 */
-  padding: 20px 0;
   box-sizing: border-box;
 }
 
@@ -292,71 +451,5 @@ onMounted(() => {
 .stat-label {
   font-size: 12px;
   color: #7f8c8d;
-}
-
-.category-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.category-item {
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.category-item:last-child {
-  border-bottom: none;
-}
-
-.category-link {
-  display: flex;
-  justify-content: space-between;
-  text-decoration: none;
-  color: #009688;
-}
-
-.category-link:hover {
-  color: #00796b;
-}
-
-.comment-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.comment-item {
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.comment-item:last-child {
-  border-bottom: none;
-}
-
-.comment-content {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.comment-author {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.comment-post {
-  color: #009688;
-  text-decoration: none;
-}
-
-.comment-post:hover {
-  text-decoration: underline;
-}
-
-.comment-text {
-  color: #7f8c8d;
-  font-size: 13px;
-  line-height: 1.4;
 }
 </style>

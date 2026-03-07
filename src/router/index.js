@@ -76,7 +76,7 @@ const routes = [
   {
     path: `/dashboard/:userId`, // 使用动态路由参数
     name: 'dashboard',
-    component: () => import('../views/Dashboard/DashboardHome.vue'),
+    component: () => import('../views/Article/index.vue'),
     children: [
       
       // {
@@ -87,7 +87,7 @@ const routes = [
       {
         path: '',
         name: 'articles',
-        component: () => import('../views/Dashboard/ArticleDashboard.vue'), // 我的文章
+        component: () => import('../views/Article/components/ArticleDashboard.vue'), // 我的文章
       },
       {
         path:'editor/new',
