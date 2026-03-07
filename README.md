@@ -29,6 +29,12 @@ json-server --watch db.json --port 3000
 npm run dev
 ```
 
+### 4. 用户登录
+可以使用以下测试账号登录：
+- 用户名：`前端小白`  
+- 密码：`frontend123`
+
+
 ## 部署到 GitHub Pages
 
 ### 方式1：使用 GitHub Actions（推荐）

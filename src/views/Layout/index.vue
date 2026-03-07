@@ -2,56 +2,7 @@
   <div class="cnblogs-fullscreen">
     <div class="inner-wrapper">
       <!-- 顶部导航栏 -->
-      <header class="top-header">
-        <div class="header-content">
-          <h1 class="site-title">
-            <a href="/" class="title-link">墨语博客</a>
-          </h1>
-          <nav class="main-navigation">
-            <router-link to="/" class="nav-link" active-class="active">首页</router-link>
-            <router-link to="/blog" class="nav-link" active-class="active">博文</router-link>
-            <router-link to="/category" class="nav-link" active-class="active">分类</router-link>
-            <router-link to="/archive" class="nav-link" active-class="active">归档</router-link>
-            <router-link to="/about" class="nav-link" active-class="active">关于</router-link>
-            
-            <!-- 登录状态下的导航项 -->
-            <template v-if="userStore.token === '1'">
-              <router-link to="/dashboard" class="nav-link" active-class="active">仪表盘</router-link>
-              <router-link to="/articles" class="nav-link" active-class="active">我的文章</router-link>
-              <router-link to="/favorites" class="nav-link" active-class="active">收藏</router-link>
-              <router-link to="/profile" class="nav-link" active-class="active">个人资料</router-link>
-              
-              <!-- 用户下拉菜单 -->
-              <div class="user-menu">
-                <el-dropdown>
-                  <span class="el-dropdown-link">
-                    <img :src="user.avatar" alt="头像" class="avatar">
-                    {{ user.username }}
-                    <el-icon><arrow-down /></el-icon>
-                  </span>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item @click="goToProfile">个人资料</el-dropdown-item>
-                      <el-dropdown-item @click="goToSettings">设置</el-dropdown-item>
-                      <el-dropdown-item @click="handleLogout" divided>退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-              </div>
-            </template>
-            
-            <!-- 非登录状态下的导航项 -->
-            <template v-else>
-              <router-link to="/login" class="nav-link login-btn">登录</router-link>
-              <router-link to="/resume" class="cta-button">View My Resume</router-link>  <!-- 添加简历链接 -->
-            </template>
-          </nav>
-          <div class="search-container">
-            <input type="text" class="search-input" placeholder="搜索博客..." />
-            <button class="search-button">搜索</button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <!-- 主体内容 -->
       <div class="main-body">
@@ -195,22 +146,7 @@
       </div>
 
       <!-- 页脚 -->
-      <footer class="site-footer">
-        <div class="footer-content">
-          <div class="footer-links">
-            <router-link to="/about" class="footer-link">关于本站</router-link>
-            <router-link to="/contact" class="footer-link">联系我们</router-link>
-            <router-link to="/sitemap" class="footer-link">网站地图</router-link>
-            <router-link to="/privacy" class="footer-link">隐私政策</router-link>
-            <router-link to="/help" class="footer-link">帮助中心</router-link>
-            <router-link to="/rss" class="footer-link">RSS订阅</router-link>
-          </div>
-          <div class="copyright">
-            <p>Copyright © 2024 墨语博客. All Rights Reserved.</p>
-            <p class="footer-note">专注于技术分享与交流， Powered by Vue.js</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   </div>
 </template>
@@ -229,6 +165,8 @@ import {
   Comment, 
   User 
 } from '@element-plus/icons-vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 const router = useRouter()
 const userStore = useUserStore()

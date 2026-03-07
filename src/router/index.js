@@ -3,6 +3,7 @@ import Layout from '../views/Layout/index.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/Login/index.vue'
 import ResumePage from '@/components/ResumePage.vue' // 新增简历页面
+import ArticleView from '../views/Article/index.vue'
 
 const routes = [
   // 添加新的简历页面路由
@@ -73,20 +74,26 @@ const routes = [
   },
   // 用户仪表盘路由
   {
-    path: '/dashboard',
+    path: `/dashboard/:userId`, // 使用动态路由参数
     name: 'dashboard',
-    component: Layout,
+    component: () => import('../views/Dashboard/DashboardHome.vue'),
     children: [
+      
       // {
       //   path: '',
       //   name: 'dashboard-home',
       //   component: () => import('../views/Dashboard/DashboardHome.vue') // 仪表盘主页
       // },
-      // {
-      //   path: 'articles',
-      //   name: 'articles',
-      //   component: () => import('../views/Dashboard/ArticlesView.vue') // 我的文章
-      // },
+      {
+        path: '',
+        name: 'articles',
+        component: () => import('../views/Dashboard/ArticleDashboard.vue'), // 我的文章
+      },
+      {
+        path:'editor/new',
+        name:'article-editor',
+        component: () => import('../views/Article/components/ArticleEditor.vue') // 文章编辑器
+      }
       // {
       //   path: 'favorites',
       //   name: 'favorites',

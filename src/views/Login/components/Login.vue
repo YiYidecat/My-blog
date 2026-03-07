@@ -67,8 +67,8 @@ const handleLogin = async () => {
       // 显示成功消息
       ElMessage.success('登录成功')
       
-      // 跳转到首页
-      router.push('/dashboard')
+      // 跳转到当前用户的仪表盘页面
+      router.push(`/dashboard/${user.id}`)
     } else {
       // 登录失败
       ElMessage.error('用户名或密码错误')
