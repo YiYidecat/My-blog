@@ -35,7 +35,7 @@
               <div class="dashboard-actions">
                 <!-- <router-link :to="`/dashboard/${userId}/articles`" class="action-btn primary">管理我的文章</router-link> -->
                 <router-link :to="`/dashboard/${userId}/editor/new`" class="action-btn primary">写新文章</router-link>
-                <router-link to="/profile" class="action-btn secondary">编辑个人资料</router-link>
+                <router-link :to="`/dashboard/${userId}/profile`" class="action-btn secondary">编辑个人资料</router-link>
               </div>
             </div>
 
@@ -88,7 +88,7 @@
                   <router-link :to="`/dashboard/${userId}/editor/new`">写新文章</router-link>
                 </li>
                 <li>
-                  <router-link to="/profile">个人资料</router-link>
+                  <router-link :to="`/dashboard/${userId}/profile`">个人资料</router-link>
                 </li>
                 <li>
                   <router-link to="/settings">设置</router-link>

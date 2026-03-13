@@ -12,7 +12,32 @@ export const PostAPI = {
   /**
    * 根据ID获取文章
    */
-  getPostById: (id) => api.get(`/posts/${id}`),
+  getPostById: async (id) => {
+    // 先获取所有文章，然后筛选出指定ID的文章
+    const allPosts = await api.get('/posts');
+    const post = allPosts.find(p => p.id === String(id));
+    
+    if (!post) {
+      throw new Error(`未找到ID为 ${id} 的文章`);
+    }
+    
+    return post;
+  },
+
+    /**
+   * 根据文章ID和作者信息获取文章
+   */
+  getPostByIdAndAuthor: async (id, author) => {
+    // 先获取所有文章，然后筛选出指定ID和作者的文章
+    const allPosts = await api.get('/posts');
+    const post = allPosts.find(p => p.id === String(id) && p.author === author);
+    
+    if (!post) {
+      throw new Error(`未找到ID为 ${id} 且作者为 ${author} 的文章`);
+    }
+    
+    return post;
+  },
 
   /**
    * 创建文章

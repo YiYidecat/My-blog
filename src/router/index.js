@@ -3,7 +3,6 @@ import Layout from '../views/Layout/index.vue'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/Login/index.vue'
 import ResumePage from '@/components/ResumePage.vue' // 新增简历页面
-import ArticleView from '../views/Article/index.vue'
 
 const routes = [
   // 添加新的简历页面路由
@@ -37,6 +36,13 @@ const routes = [
         component: () => import('../views/Login/components/Register.vue')
       }
     ]
+  },
+  // 单个文章详情路由
+  {
+    path: '/details/:id/:author',
+    name: 'details',
+    component: () => import('../views/Details/index.vue'),
+    props: true
   },
   // 主页路由（使用统一布局）
   {
@@ -72,37 +78,53 @@ const routes = [
       // }
     ]
   },
+  // 用户个人资料路由
+  {
+    path: `/dashboard/:userId/profile`, // 使用动态路由参数
+    name: 'profile',
+    component: () => import('../views/Profile/index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'profile-history',
+        component: () => import('../views/Profile/components/History.vue') // 浏览历史模块
+      }
+    ]
+  },
+  // 简化版个人资料路由
+  {
+    path: '/profile',
+    name: 'simple-profile',
+    component: () => import('../views/Profile/index.vue'),
+    children: [
+      {
+        path: '',
+        name: 'simple-profile-history',
+        component: () => import('../views/Profile/components/History.vue') // 浏览历史模块
+      }
+    ]
+  },
   // 用户仪表盘路由
   {
     path: `/dashboard/:userId`, // 使用动态路由参数
     name: 'dashboard',
     component: () => import('../views/Article/index.vue'),
     children: [
-      
-      // {
-      //   path: '',
-      //   name: 'dashboard-home',
-      //   component: () => import('../views/Dashboard/DashboardHome.vue') // 仪表盘主页
-      // },
       {
         path: '',
         name: 'articles',
         component: () => import('../views/Article/components/ArticleDashboard.vue'), // 我的文章
       },
       {
-        path:'editor/new',
+        //路径是 /dashboard/:userId/editor/new 或 /dashboard/:userId/editor/:articleId
+        path:'editor/:articleId?',
         name:'article-editor',
         component: () => import('../views/Article/components/ArticleEditor.vue') // 文章编辑器
-      }
+      },
       // {
       //   path: 'favorites',
       //   name: 'favorites',
       //   component: () => import('../views/Dashboard/FavoritesView.vue') // 收藏
-      // },
-      // {
-      //   path: 'profile',
-      //   name: 'profile',
-      //   component: () => import('../views/Dashboard/ProfileView.vue') // 个人资料
       // },
       // {
       //   path: 'editor',

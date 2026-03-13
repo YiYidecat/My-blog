@@ -14,7 +14,7 @@
               <article v-for="post in getCurrentPagePosts()" :key="post.id" class="post-item">
                 <div class="post-header">
                   <h2 class="post-title">
-                    <router-link :to="`/post/${post.id}`" class="post-link">{{ post.title }}</router-link>
+                    <router-link :to="{ path: `/details/${post.id}/${post.author}`, query: { page: currentPage } }" class="post-link">{{ post.title }}</router-link>
                   </h2>
                   <div class="post-meta">
                     <span class="meta-date">发布于 {{ formatDate(post.publishDate) }}</span>
@@ -33,7 +33,7 @@
                   <div class="post-tags">
                     <router-link v-for="tag in post.tags" :key="tag" :to="`/tag/${tag.toLowerCase()}`" class="tag">{{ tag }}</router-link>
                   </div>
-                  <router-link :to="`/post/${post.id}`" class="read-more">阅读全文 »</router-link>
+                  <router-link :to="{ path: `/details/${post.id}/${post.author}`, query: { page: currentPage } }" class="read-more">阅读全文 »</router-link>
                 </div>
               </article>
             </div>
@@ -152,8 +152,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage } from 'element-plus'
 import { PostAPI, CategoryAPI, CommentAPI, UserAPI } from '@/apis'
@@ -169,6 +169,7 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 
 const router = useRouter()
+const route = useRoute()
 const userStore = useUserStore()
 
 // 响应式数据
@@ -183,7 +184,9 @@ const user = ref({
   articlesCount: 0,
   commentsCount: 0
 })
-const currentPage = ref(1)
+
+// 从路由参数中获取当前页码，如果没有则默认为1
+const currentPage = ref(parseInt(route.query.page) || 1)
 
 // 获取文章标题的方法
 const getPostTitleById = (postId) => {
@@ -207,6 +210,15 @@ const totalPages = computed(() => Math.ceil(posts.value.length / postsPerPage))
 const getCurrentPagePosts = () => {
   const startIndex = (currentPage.value - 1) * postsPerPage
   const endIndex = startIndex + postsPerPage
+
+      // 滚动到页面顶部
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 100); // 延迟执行以确保页面已更新
+    
   return posts.value.slice(startIndex, endIndex)
 }
 
@@ -214,6 +226,12 @@ const getCurrentPagePosts = () => {
 const changePage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
+    
+    // 更新URL中的页码参数
+    const query = { ...route.query, page: page }
+    router.push({ query })
+    
+
   }
 }
 
@@ -254,12 +272,17 @@ const fetchData = async () => {
       user.value = userData
     }
     
-    // 重置到第一页
-    currentPage.value = 1
+    // 从路由参数中获取当前页码，如果没有则默认为1
+    // 注意：不要在这里重置currentPage，而是使用URL中的值
+    const urlPage = parseInt(route.query.page) || 1
+    // 确保页码不超过总页数
+    currentPage.value = Math.min(urlPage, Math.max(1, totalPages.value))
   } catch (error) {
     console.error('获取数据失败:', error)
   }
 }
+
+
 
 onMounted(() => {
   fetchData()
@@ -274,9 +297,21 @@ onMounted(() => {
   // 手动调用一次以确保当前用户信息正确
   updateUserFromStore()
 })
+
+// 监听路由参数变化，更新当前页码
+watch(
+  () => route.query.page,
+  (newPage) => {
+    const pageNum = parseInt(newPage) || 1
+    currentPage.value = Math.min(pageNum, Math.max(1, totalPages.value))
+  }
+)
 </script>
 
 <style scoped>
+html {
+  scroll-behavior: smooth;
+}
 /* ------------------------
    完整替换样式（Scoped）
    说明：.cnblogs-fullscreen 作为一个"视口级"固定滚动容器，

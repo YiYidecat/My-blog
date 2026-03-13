@@ -49,8 +49,8 @@
         <el-table-column prop="commentsCount" label="评论数" width="100"></el-table-column>
         <el-table-column label="操作" width="200">
           <template #default="{ row }">
-            <el-button size="small" @click.stop="editArticle(row.id)">编辑</el-button>
-            <el-button size="small" type="primary" @click.stop="viewArticle(row.id)">查看</el-button>
+            <el-button size="small" type="primary" @click.stop="editArticle(row.id)">编辑</el-button>
+            <!-- <el-button size="small" type="primary" @click.stop="viewArticle(row.id)">查看</el-button> -->
             <el-button size="small" type="danger" @click.stop="deleteArticle(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -66,7 +66,6 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { PostAPI, CategoryAPI } from '@/apis'
 import { useUserStore } from '@/stores/userStore.js'
 
-const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -136,13 +135,13 @@ const createNewArticle = () => {
 const editArticle = (articleId) => {
   // 从用户store获取当前用户的ID
   const userId = userStore.user?.id || '1' // 默认使用ID为1的用户
-  router.push(`/dashboard/${userId}/articles/editor/${articleId}`)
+  router.push(`/dashboard/${userId}/editor/${articleId}`)
 }
 
-// 查看文章
-const viewArticle = (articleId) => {
-  router.push(`/post/${articleId}`)
-}
+// // 查看文章
+// const viewArticle = (articleId) => {
+//   router.push(`/post/${articleId}`)
+// }
 
 // 删除文章
 const deleteArticle = async (articleId) => {
@@ -173,7 +172,7 @@ const deleteArticle = async (articleId) => {
 
 // 处理表格行点击
 const handleRowClick = (row) => {
-  viewArticle(row.id)
+  editArticle(row.id)
 }
 
 onMounted(() => {

@@ -6,9 +6,9 @@
       </h1>
       <nav class="main-navigation">
         <router-link to="/" class="nav-link" active-class="active">首页</router-link>
-        <router-link to="/blog" class="nav-link" active-class="active">博文</router-link>
+        <!-- <router-link to="/blog" class="nav-link" active-class="active">博文</router-link> -->
         <router-link to="/category" class="nav-link" active-class="active">分类</router-link>
-        <router-link to="/archive" class="nav-link" active-class="active">归档</router-link>
+        <!-- <router-link to="/archive" class="nav-link" active-class="active">归档</router-link> -->
         <router-link to="/about" class="nav-link" active-class="active">关于</router-link>
         
         <!-- 登录状态下的导航项 -->
@@ -16,7 +16,7 @@
           <!-- <router-link :to="`/dashboard/${userStore.user.id}`" class="nav-link" active-class="active">仪表盘</router-link> -->
           <router-link :to="`/dashboard/${userStore.user.id}`" class="nav-link" active-class="active">我的文章</router-link>
           <router-link to="/dashboard/:userId/favorites" class="nav-link" active-class="active">收藏</router-link>
-          <router-link to="/profile" class="nav-link" active-class="active">个人资料</router-link>
+          <router-link :to="`/dashboard/${userStore.user.id}/profile`" class="nav-link" active-class="active">个人资料</router-link>
           
           <!-- 用户下拉菜单 -->
           <div class="user-menu">
@@ -58,6 +58,7 @@ import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { UserAPI } from '@/apis'
+import { useHistoryStore } from '@/stores/historyStore.js'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -74,7 +75,7 @@ const user = ref({
 
 // 跳转到个人资料页
 const goToProfile = () => {
-  router.push('/profile')
+  router.push(`/dashboard/${userStore.user.id}/profile`)
 }
 
 // 跳转到设置页
@@ -85,6 +86,8 @@ const goToSettings = () => {
 // 处理退出登录
 const handleLogout = () => {
   userStore.logout()
+  // 用户退出登录时清空浏览历史记录
+  useHistoryStore().deleteAllHistory()
   ElMessage.success('已退出登录')
   router.push('/login')
 }

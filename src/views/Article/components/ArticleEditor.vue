@@ -170,7 +170,9 @@ import { useUserStore } from '@/stores/userStore.js'
 import Header from '@/views/Layout/components/Header.vue'
 import Footer from '@/views/Layout/components/Footer.vue'
 
+// route 路由参数
 const route = useRoute()
+// router 用于路由的重定向
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -216,7 +218,7 @@ const fetchCategories = async () => {
 // 根据路由参数加载文章
 // 根据路由参数加载文章 (优化版：优先加载本地草稿)
 const loadArticle = async () => {
-  const routeId = route.params.id // 获取路由中的 ID (可能是 undefined, 'new', 或数字)
+  const routeId = route.params.articleId // 获取路由中的 ID (可能是 undefined, 'new', 或数字)
   const userId = userStore.user?.id || '1'
   
   // 1. 定义缓存键策略
@@ -447,6 +449,10 @@ const saveArticle = async () => {
 
 // 清空当前编辑内容
 const clearContent = () => {
+  // 从用户store当中获取当前用户的ID
+  const userId = userStore.user?.id || '1'
+  const key = `draft_${userId}_cache`
+
   ElMessageBox.confirm(
     '确定要清空当前编辑的所有内容吗？此操作不可恢复。',
     '警告',
@@ -469,6 +475,8 @@ const clearContent = () => {
       views: 0,
       commentsCount: 0
     }
+
+    localStorage.removeItem(key)
     ElMessage.success('内容已清空')
   }).catch(() => {
     // 用户取消操作
