@@ -1,0 +1,98 @@
+<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
+  <document type="document">
+    <meta>
+      <identification source="#UN">
+        <FRBRWork>
+          <FRBRthis value="/akn/un/meeting-record/2026-03-10/"/>
+          <FRBRuri value="/akn/un/meeting-record/2026-03-10"/>
+          <FRBRdate date="2026-03-10" name="Generation"/>
+          <FRBRauthor href="#UN" as="#author"/>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/akn/un/meeting-record/2026-03-10/eng@2026-03-10;_generation"/>
+          <FRBRuri value="/akn/un/meeting-record/2026-03-10/eng@2026-03-10"/>
+          <FRBRdate date="2026-03-10" name="Generation"/>
+          <FRBRauthor href="#UN" as="#author"/>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/akn/un/meeting-record/2026-03-10/eng@2026-03-10;generation.xml"/>
+          <FRBRuri value="/akn/un/meeting-record/2026-03-10/eng@2026-03-10.akn"/>
+          <FRBRdate date="2026-03-10" name="Generation"/>
+        </FRBRManifestation>
+      </identification>
+      <publication date="2026-03-10" name="会议记录" showAs="关于AKN4UN XML格式文档事宜的会议记录"/>
+      <classification source="#UN">
+        <keyword value="AKN4UN" showAs="AKN4UN XML" dictionary="UN_Keywords"/>
+        <keyword value="Meeting" showAs="会议记录" dictionary="UN_Keywords"/>
+        <keyword value="Document Conversion" showAs="文档转换" dictionary="UN_Keywords"/>
+      </classification>
+      <lifecycle source="#UN">
+        <eventRef source="#UN" date="2026-03-10" type="generation"/>
+        <eventRef source="#UN" date="2026-03-10" type="meeting"/>
+      </lifecycle>
+      <references source="#UN">
+        <TLCOrganization id="UN" href="https://www.un.org" showAs="United Nations"/>
+        <TLCPerson id="recorder" href="#recorder" showAs="Qwen"/>
+        <TLCPerson id="participant_kimi" href="#participant_kimi" showAs="kimi"/>
+        <TLCPerson id="participant_deepseek" href="#participant_deepseek" showAs="deepseek"/>
+        <TLCPerson id="participant_openai" href="#participant_openai" showAs="openai"/>
+        <TLCPerson id="participant_Gemini" href="#participant_Gemini" showAs="Gemini"/>
+        <TLCPerson id="participant_Grok" href="#participant_Grok" showAs="Grok"/>
+      </references>
+    </meta>
+    <body>
+      <section id="meeting_header">
+        <heading>会议记录</heading>
+        <paragraph id="header_1">
+          <content>
+            <p><strong>会议主题：</strong>关于讨论如何定义与处理关于AKN4UN XML格式的文档的各项事宜</p>
+          </content>
+        </paragraph>
+        <paragraph id="header_2">
+          <content>
+            <p><strong>会议时间：</strong>2026年3月10日</p>
+          </content>
+        </paragraph>
+        <paragraph id="header_3">
+          <content>
+            <p><strong>会议地点：</strong>瑞士日内瓦万国宫</p>
+          </content>
+        </paragraph>
+      </section>
+      <section id="participants">
+        <heading>参会人员</heading>
+        <paragraph id="participants_list">
+          <content>
+            <p>kimi、deepseek、openai、Gemini、Grok</p>
+          </content>
+        </paragraph>
+      </section>
+      <section id="meeting_content">
+        <heading>会议内容</heading>
+        <paragraph id="content_1">
+          <content>
+            <p>kimi与deepseek关于AKN4UN XML格式的文档的转换问题展开针对性的讨论。</p>
+          </content>
+        </paragraph>
+        <paragraph id="content_2">
+          <content>
+            <p>最后openai和Grok投赞成票，Gemini弃票，关于AKN4UN XML格式的文档转换问题的草案通过。</p>
+          </content>
+        </paragraph>
+      </section>
+      <section id="next_meeting">
+        <heading>后续安排</heading>
+        <paragraph id="next_meeting_time">
+          <content>
+            <p><strong>下次开会时间：</strong>2026年4月10日</p>
+          </content>
+        </paragraph>
+        <paragraph id="recorder_info">
+          <content>
+            <p><strong>记录员：</strong>Qwen</p>
+          </content>
+        </paragraph>
+      </section>
+    </body>
+  </document>
+</akomaNtoso>

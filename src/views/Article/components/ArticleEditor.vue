@@ -159,6 +159,13 @@
       <Footer />
     </div>
   </div>
+  
+  <!-- AI Chat Assistant -->
+  <AIChatAssistant 
+    :current-content="article.content" 
+    :current-title="article.title"
+    @content-update="handleContentUpdate"
+  />
 </template>
 
 <script setup>
@@ -169,6 +176,7 @@ import { PostAPI, CategoryAPI, UserAPI } from '@/apis'
 import { useUserStore } from '@/stores/userStore.js'
 import Header from '@/views/Layout/components/Header.vue'
 import Footer from '@/views/Layout/components/Footer.vue'
+import AIChatAssistant from './AIChatAssistant.vue'
 
 // route 路由参数
 const route = useRoute()
@@ -203,6 +211,13 @@ const user = ref({
   postsCount: 0,
   articlesCount: 0,
   commentsCount: 0
+})
+
+// Components
+defineOptions({
+  components: {
+    AIChatAssistant
+  }
 })
 
 // 获取分类列表
@@ -587,6 +602,17 @@ const fetchSidebarData = async () => {
   } catch (error) {
     console.error('获取用户信息失败:', error)
   }
+}
+
+// Handle content updates from AI assistant
+const handleContentUpdate = (data) => {
+  if (data.xml) {
+    article.value.xmlContent = data.xml
+  }
+  if (data.text) {
+    article.value.content = data.text
+  }
+  ElMessage.success('内容已通过AI助手更新')
 }
 
 onMounted(async () => {
