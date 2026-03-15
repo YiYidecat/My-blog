@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/legaldocml/ns/akn/3.0 http://docs.oasis-open.org/legaldocml/akn-core/v1.0/os/part2-specs/schemas/akomantoso30.xsd" xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:akn4un="http://un.org/akn4un">
+  <!-- UN Official Document - Meeting Minutes in AKN4UN Standard Format -->
+  <statement name="minutes">
+    <meta>
+      <identification source="#DGACM">
+        <FRBRWork>
+          <FRBRthis value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/!main/"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/"></FRBRuri>
+          <FRBRdate date="2026-03-10" name="generation"></FRBRdate>
+          <FRBRauthor href="#un" as="author"></FRBRauthor>
+          <FRBRcountry value="un"></FRBRcountry>
+        </FRBRWork>
+        <FRBRExpression>
+          <FRBRthis value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/eng@!main/"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/eng@/"></FRBRuri>
+          <FRBRdate date="2026-03-10" name="publication"></FRBRdate>
+          <FRBRauthor href="#un" as="issuer"></FRBRauthor>
+          <FRBRlanguage language="eng"></FRBRlanguage>
+        </FRBRExpression>
+        <FRBRManifestation>
+          <FRBRthis value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/eng@/!main.xml"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/minutes/meeting/2026-03-10/AKN4UN-Special/eng@.xml"></FRBRuri>
+          <FRBRdate date="2026-12-10" name="markup"></FRBRdate>
+          <FRBRauthor href="#DGACM" as="editor"></FRBRauthor>
+        </FRBRManifestation>
+      </identification>
+      <classification source="#DGACM">
+        <keyword value="AKN4UN" showAs="AKN4UN XML Standard" dictionary="#DGACM"></keyword>
+        <keyword value="DOCUMENT CONVERSION" showAs="Document Conversion" dictionary="#DGACM"></keyword>
+        <keyword value="MEETING MINUTES" showAs="Meeting Minutes" dictionary="#DGACM"></keyword>
+        <keyword refersTo="#agenda" value="AKN4UN-Special" showAs="Special Meeting on AKN4UN XML Document Processing" dictionary="#DGACM"></keyword>
+      </classification>
+      <workflow source="#un">
+        <step date="2026-03-10" outcome="convened" as="AKN4UN-Special/2026" by="#un" />
+        <step date="2026-03-10" outcome="documentGenerated" as="Minutes-AKN4UN-20260310" by="#Qwen" />
+      </workflow>
+      <analysis source="#un">
+        <parliamentary>
+          <voting outcome="adopted">
+            <quorum value="5"></quorum>
+            <count inFavor="2" against="0" abstention="1"></count>
+          </voting>
+        </parliamentary>
+      </analysis>
+      <references source="#DGACM">
+        <TLCOrganization eId="source" href="/akn/ontology/organization/un/DGACM" showAs="DGACM"></TLCOrganization>
+        <TLCOrganization eId="un" href="/akn/ontology/organization/un" showAs="United Nations"></TLCOrganization>
+        <TLCPerson eId="kimi" href="/akn/ontology/person/meetingParticipant/kimi" showAs="kimi"></TLCPerson>
+        <TLCPerson eId="deepseek" href="/akn/ontology/person/meetingParticipant/deepseek" showAs="deepseek"></TLCPerson>
+        <TLCPerson eId="openai" href="/akn/ontology/person/meetingParticipant/openai" showAs="openai"></TLCPerson>
+        <TLCPerson eId="Gemini" href="/akn/ontology/person/meetingParticipant/Gemini" showAs="Gemini"></TLCPerson>
+        <TLCPerson eId="Grok" href="/akn/ontology/person/meetingParticipant/Grok" showAs="Grok"></TLCPerson>
+        <TLCPerson eId="Qwen" href="/akn/ontology/person/recorder/Qwen" showAs="Qwen (Recorder)"></TLCPerson>
+        <TLCTerm eId="minutesTitle" href="/akn/ontology/reference/un/minutesTitle" showAs="Minutes title"></TLCTerm>
+        <TLCTerm eId="draftAKN4UN" href="/akn/ontology/reference/un/draft/AKN4UN-Conversion" showAs="Draft on AKN4UN XML Document Conversion"></TLCTerm>
+      </references>
+      <presentation source="#un">
+        <akn4un:footerFirstPage>
+          <akn4un:footerFirstPageLeft>
+            <akn4un:internalCode>
+              <docketNumber refersTo="#publicationJobNumber">26-03851 (E)</docketNumber>
+            </akn4un:internalCode>
+          </akn4un:footerFirstPageLeft>
+        </akn4un:footerFirstPage>
+      </presentation>
+    </meta>
+    <coverPage eId="coverPage_1">
+      <p><docAuthority refersTo="#publisher">United Nations</docAuthority></p>
+      <p class="upperRight"><docNumber refersTo="#symbol">MIN/AKN4UN/2026/SPECIAL</docNumber></p>
+      <p><docAuthority refersTo="#issuingBody" class="rightBig">Special Meeting on AKN4UN XML Standards</docAuthority></p>
+      <p><docDate date="2026-03-10" class="rightSmall" refersTo="#dateOfIssuance">10 March 2026</docDate></p>
+      <p><session refersTo="#meeting" value="Special" eId="coverPage_1__session_1">Special Meeting</session></p>
+      <p><inline name="agenda item name">Definition, Processing and Conversion of AKN4UN XML Format Documents</inline></p>
+      <p><docTitle>Minutes of the Special Meeting held on 10 March 2026</docTitle></p>
+    </coverPage>
+    <preface>
+      <p>
+        <docNumber>AKN4UN/2026/SPECIAL/MIN.1</docNumber>
+        <docTitle refersTo="#minutesTitle">
+          <span class="bold">Minutes of the Special Meeting on AKN4UN XML Format Documents</span>
+        </docTitle>
+      </p>
+    </preface>
+    <preamble>
+      <formula name="introductoryFormula" eId="formula_1">
+        <p xml:space="preserve"><span class="italic">The following is a record of the Special Meeting convened to discuss matters pertaining to AKN4UN XML format documents.</span></p>
+      </formula>
+    </preamble>
+    <mainBody>
+      <paragraph eId="para_1" class="MercuryDocument">
+        <num>I.</num>
+        <heading>Basic Meeting Information</heading>
+        <content eId="para_1__content">
+          <list>
+            <point eId="para_1_list_point_a"><num>(a)</num><content><p xml:space="preserve"><span class="italic">Nature of Meeting:</span> Official United Nations meeting, archived using the AKN4UN XML standard format. Document type: Meeting Minutes, focusing on matters related to AKN4UN XML format documents.</p></content></point>
+            <point eId="para_1_list_point_b"><num>(b)</num><content><p xml:space="preserve"><span class="italic">Meeting Topic:</span> Dedicated discussion on the definition, processing, and various matters related to the conversion of AKN4UN XML format documents.</p></content></point>
+            <point eId="para_1_list_point_c"><num>(c)</num><content><p xml:space="preserve"><span class="italic">Meeting Date:</span> 10 March 2026. Document generation time is consistent with the meeting convening time.</p></content></point>
+            <point eId="para_1_list_point_d"><num>(d)</num><content><p xml:space="preserve"><span class="italic">Meeting Venue:</span> Palais des Nations, Geneva, Switzerland.</p></content></point>
+            <point eId="para_1_list_point_e"><num>(e)</num><content><p xml:space="preserve"><span class="italic">Document Attribution:</span> Officially issued by the United Nations. The record number follows AKN4UN metadata specifications. Language version: English.</p></content></point>
+          </list>
+        </content>
+      </paragraph>
+      <paragraph eId="para_2" class="MercuryDocument">
+        <num>II.</num>
+        <heading>List of Participants</heading>
+        <content eId="para_2__content">
+          <p xml:space="preserve">        There were five main participants in this meeting: <author refersTo="#kimi">kimi</author>, <author refersTo="#deepseek">deepseek</author>, <author refersTo="#openai">openai</author>, <author refersTo="#Gemini">Gemini</author>, and <author refersTo="#Grok">Grok</author>. The recording of the meeting was undertaken by <author refersTo="#Qwen">Qwen</author>, who served as the dedicated recorder for this meeting. All participant and recorder information has been duly registered in the references module of this AKN4UN document.</p>
+        </content>
+      </paragraph>
+      <paragraph eId="para_3" class="MercuryDocument">
+        <num>III.</num>
+        <heading>Core Content and Key Discussion Points</heading>
+        <content eId="para_3__content">
+          <p xml:space="preserve">        The meeting focused on specialized discussions concerning core issues of AKN4UN XML format documents. The core discussion segment was led by <author refersTo="#kimi">kimi</author> and <author refersTo="#deepseek">deepseek</author>. The two engaged in targeted, in-depth communication and exchange regarding the conversion issues of AKN4UN XML format documents. They clarified the standards, processes, and handling details during the conversion of such documents, laying the groundwork for the subsequent review of related drafts.</p>
+        </content>
+      </paragraph>
+      <paragraph eId="para_4" class="MercuryDocument">
+        <num>IV.</num>
+        <heading>Draft Vote and Deliberation Outcome</heading>
+        <content eId="para_4__content">
+          <p xml:space="preserve">        The meeting conducted a vote on the specialized draft concerning the conversion of AKN4UN XML format documents. The final voting result was clear: the two participating parties, <author refersTo="#openai">openai</author> and <author refersTo="#Grok">Grok</author>, voted in favor; <author refersTo="#Gemini">Gemini</author> chose to abstain; there were no votes against. The draft met the conditions for adoption and was formally passed. Subsequent work on the conversion of AKN4UN XML format documents will proceed according to the content of the draft.</p>
+        </content>
+      </paragraph>
+      <paragraph eId="para_5" class="MercuryDocument">
+        <num>V.</num>
+        <heading>Follow-up Work Arrangements</heading>
+        <content eId="para_5__content">
+          <p xml:space="preserve">        To continuously follow up on the implementation and advancement of matters related to AKN4UN XML format documents and to refine the execution details of the draft, the meeting clarified the follow-up arrangements: the next thematic meeting is scheduled for 10 April 2026 to continue discussions on related follow-up work. All content of this meeting has been compiled and archived by the recorder, <author refersTo="#Qwen">Qwen</author>, forming a standard AKN4UN XML format meeting record for retention.</p>
+        </content>
+      </paragraph>
+    </mainBody>
+    <conclusions eId="conclusions">
+      <p>
+        <event refersTo="#adjournment">
+          <location title="Palais des Nations" refersTo="#meetingVenue">Palais des Nations, Geneva</location>
+          <eol />
+          <docDate date="2026-03-10" refersTo="#adjournmentDate">10 March 2026</docDate>
+        </event>
+      </p>
+      <p><span class="italic">[Signed]</span></p>
+      <p><author refersTo="#Qwen">Qwen</author></p>
+      <p>Recorder</p>
+    </conclusions>
+  </statement>
+</akomaNtoso>

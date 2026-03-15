@@ -279,8 +279,15 @@ const loadArticle = async () => {
       const specificCache = localStorage.getItem(specificCacheKey)
       if (specificCache) {
          console.log('✅ 命中特定文章缓存')
-         article.value = JSON.parse(specificCache)
-         source = 'local_specific'
+         const cachedArticle = JSON.parse(specificCache)
+         // 确保缓存中的文章属于当前用户
+         const currentAuthor = userStore.user?.username || userStore.user?.name || '墨语'
+         if (cachedArticle.author === currentAuthor) {
+           article.value = cachedArticle
+           source = 'local_specific'
+         } else {
+           console.log('❌ 缓存文章不属于当前用户，忽略该缓存')
+         }
       }
     }
 
@@ -288,7 +295,9 @@ const loadArticle = async () => {
     if (source === 'server') {
       try {
         console.log('🌐 请求服务器数据...')
-        const post = await PostAPI.getPostById(routeId)
+        // 使用作者信息和ID共同定位文章，避免不同作者的相同ID文章混淆
+        const currentAuthor = userStore.user?.username || userStore.user?.name || '墨语'
+        const post = await PostAPI.getPostByIdAndAuthor(routeId, currentAuthor)
         article.value = { ...post }
         
         // 如果服务器返回的数据没有 xmlContent，生成默认的
@@ -446,8 +455,10 @@ const saveArticle = async () => {
       cacheKey = `draft_${userId}_${article.value.id}`;
     }
 
+    const currentAuthor = userStore.user?.username || userStore.user?.name || '墨语'
     const articleData = {
       ...article.value,
+      author: currentAuthor, // 确保作者信息正确
       updatedAt: new Date().toISOString()
     }
 
@@ -524,8 +535,10 @@ const getNextId = async () => {
 const publishArticle = async () => {
   try {
     // 准备文章数据
+    const currentAuthor = userStore.user?.username || userStore.user?.name || '墨语'
     const articleData = {
       ...article.value,
+      author: currentAuthor, // 确保作者信息正确
       xmlContent: article.value.xmlContent,
       publishDate: article.value.publishDate || new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString()

@@ -1,0 +1,86 @@
+
+<akomaNtoso>
+  <statement xmlns="http://www.akomantoso.org/2012" version="1.3">
+    <conclusions eId="conclusions">
+      <p>
+        <event refersTo="#adoption">
+          <location title="63rd" refersTo="#adoptionMeeting">63rd plenary meeting</location>
+          <eol />
+          <docDate date="2026-03-10" refersTo="#adoptionDate">10 March 2026</docDate>
+        </event>
+      </p>
+    </conclusions>
+    
+    <!-- 会议基础概况 -->
+    <statement eId="meeting_summary">
+      <paragraph class="MercuryDocument">
+        <num>1.</num>
+        <content>
+          <p xml:space="preserve">The meeting is an official United Nations formal session, archived in AKN4UN XML standard format. The document type is a meeting record focusing on matters related to the AKN4UN XML format documents.</p>
+        </content>
+      </paragraph>
+      
+      <paragraph class="MercuryDocument">
+        <num>2.</num>
+        <content>
+          <p xml:space="preserve">The theme of the meeting is dedicated to discussing the definition, processing, and conversion related matters of AKN4UN XML format documents.</p>
+        </content>
+      </paragraph>
+      
+      <paragraph class="MercuryDocument">
+        <num>3.</num>
+        <content>
+          <p xml:space="preserve">The meeting took place on 10 March 2026, with the document generation date matching the meeting's convening time. The venue is the Palais des Nations in Geneva, Switzerland.</p>
+        </content>
+      </paragraph>
+      
+      <paragraph class="MercuryDocument">
+        <num>4.</num>
+        <content>
+          <p xml:space="preserve">The document is officially released by the United Nations and follows AKN4UN metadata standards. The language version used is English.</p>
+        </content>
+      </paragraph>
+    </statement>
+
+    <!-- 参会人员明细 -->
+    <statement eId="attendees">
+      <paragraph class="MercuryDocument">
+        <num>5.</num>
+        <content>
+          <p xml:space="preserve">There were five participants in this meeting, namely kimi, deepseek, openai, Gemini, and Grok. The recording of the meeting was handled by Qwen, who served as the dedicated recorder for this session. All participant information has been recorded and standardized in the reference module.</p>
+        </content>
+      </paragraph>
+    </statement>
+
+    <!-- 会议核心内容与讨论重点 -->
+    <statement eId="discussion_points">
+      <paragraph class="MercuryDocument">
+        <num>6.</num>
+        <content>
+          <p xml:space="preserve">The meeting focused on specialized discussions regarding core issues related to AKN4UN XML format documents. The primary discussion was led by kimi and deepseek, who conducted in-depth communication exchanges on the conversion of AKN4UN XML format documents. They clarified the standards, processes, and handling procedures for document conversion, laying a foundation for subsequent draft reviews.</p>
+        </content>
+      </paragraph>
+    </statement>
+
+    <!-- 草案表决与审议结果 -->
+    <statement eId="resolution">
+      <paragraph class="MercuryDocument">
+        <num>7.</num>
+        <content>
+          <p xml:space="preserve">The meeting conducted a vote on the draft regarding the conversion of AKN4UN XML format documents. The final voting results showed that openai and Grok voted in favor, while Gemini chose to abstain. There were no opposing votes, thus the draft met the required conditions for passage and was officially approved. Subsequent work will be carried out according to the content of this draft.</p>
+        </content>
+      </paragraph>
+    </statement>
+
+    <!-- 后续工作安排 -->
+    <statement eId="next_steps">
+      <paragraph class="MercuryDocument">
+        <num>8.</num>
+        <content>
+          <p xml:space="preserve">To continue tracking the implementation of AKN4UN XML format documents and refine the execution details, it has been determined that a follow-up session will be held on 10 April 2026 to further discuss subsequent work. The entire meeting content was recorded by Qwen and archived as a standard AKN4UN XML format meeting record.</p>
+        </content>
+      </paragraph>
+    </statement>
+
+  </statement>
+</akomaNtoso>

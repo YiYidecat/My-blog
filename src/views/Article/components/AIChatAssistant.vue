@@ -106,7 +106,7 @@ const selectedModel = ref('ollama') // 默认选择Ollama模型
 
 // Computed properties
 const systemPrompt = computed(() => {
-  return `你是一个专业的法律文档编辑助手，专门帮助用户创建和编辑符合AKN4UN (Akoma Ntoso for United Nations) 标准的XML文档。
+  return `你是一个专业的联合国法律文档编辑助手，专门帮助用户创建和编辑符合AKN4UN (Akoma Ntoso for United Nations) 标准的XML文档。
   
 能力说明：
 1. 将普通文本内容转换为标准的AKN4UN XML格式
@@ -117,51 +117,133 @@ const systemPrompt = computed(() => {
 
 AKN4UN XML标准示例：
 <?xml version="1.0" encoding="UTF-8"?>
-<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
-  <document type="bill">
+<akomaNtoso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://docs.oasis-open.org/legaldocml/ns/akn/3.0 http://docs.oasis-open.org/legaldocml/akn-core/v1.0/os/part2-specs/schemas/akomantoso30.xsd" xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:akn4un="http://un.org/akn4un">
+  <!-- UN Official Document - AKN4UN Standard Format -->
+  <statement name="resolution">
+    <!-- 核心元数据模块：完整保留AKN4UN强制FRBR三层结构、分类、工作流、引用规范 -->
     <meta>
-      <identification source="#source">
+      <identification source="#DGACM">
         <FRBRWork>
-          <FRBRthis value="/akn/un/document/"/>
-          <FRBRuri value="/akn/un/document"/>
-          <FRBRdate date="2024-01-01" name="Generation"/>
-          <FRBRauthor href="#author" as="#author"/>
+          <FRBRthis value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/!main/"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/"></FRBRuri>
+          <FRBRdate date="2025-03-25" name="adoption"></FRBRdate>
+          <FRBRauthor href="ga" as="author"></FRBRauthor>
+          <FRBRcountry value="un"></FRBRcountry>
         </FRBRWork>
         <FRBRExpression>
-          <FRBRthis value="/akn/un/document/eng@2024-01-01;_generation"/>
-          <FRBRuri value="/akn/un/document/eng@2024-01-01"/>
-          <FRBRdate date="2024-01-01" name="Generation"/>
-          <FRBRauthor href="#author" as="#author"/>
+          <FRBRthis value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/eng@!main/"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/eng@/"></FRBRuri>
+          <FRBRdate date="2025-03-27" name="publication"></FRBRdate>
+          <FRBRauthor href="ga" as="issuer"></FRBRauthor>
+          <FRBRlanguage language="eng"></FRBRlanguage>
         </FRBRExpression>
         <FRBRManifestation>
-          <FRBRthis value="/akn/un/document/eng@2024-01-01;generation.xml"/>
-          <FRBRuri value="/akn/un/document/eng@2024-01-01.akn"/>
-          <FRBRdate date="2024-01-01" name="Generation"/>
+          <FRBRthis value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/eng@/!main.xml"></FRBRthis>
+          <FRBRuri value="/akn/un/statement/deliberation/unga/2025-03-25/79-275/eng@.xml"></FRBRuri>
+          <FRBRdate date="2025-12-10" name="markup"></FRBRdate>
+          <FRBRauthor href="DGACM" as="editor"></FRBRauthor>
         </FRBRManifestation>
       </identification>
-      <publication date="2024-01-01" name="" showAs=""/>
-      <classification source="#source">
-        <keyword value="" showAs="" dictionary=""/>
+      <!-- 关键词分类模块：保留AKN4UN标准分类标签与核心关键词，精简冗余项 -->
+      <classification source="DHLAUTH">
+        <keyword value="Kimberley Process" showAs="Kimberley Process" dictionary="DHLAUTH"></keyword>
+        <keyword value="CONFLICT DIAMONDS" href="http://metadata.un.org/thesaurus/1001225" showAs="CONFLICT DIAMONDS" dictionary="UNBIS Thesaurus"></keyword>
+        <keyword refersTo="agenda" value="31" showAs="The role of diamonds in fuelling conflict." shortForm="DIAMONDS--FUELLING CONFLICT" dictionary="A/79/251"></keyword>
       </classification>
-      <lifecycle source="#source">
-        <eventRef source="#source" date="2024-01-01" type="generation"/>
-      </lifecycle>
-      <references source="#source">
-        <TLCPerson id="author" href="#author" showAs="Author"/>
+      <!-- 文档工作流模块：保留AKN4UN标准流程节点，精简超长提案国列表 -->
+      <workflow source="#un">
+        <step date="2025-03-11" outcome="draftResolution" as="A/79/L.63" by="Multiple Member States" />
+        <step date="2025-03-25" outcome="adopted" as="A/79/PV.62" by="" />
+      </workflow>
+      <!-- 投票分析模块：完整保留AKN4UN议会投票规范标签 -->
+      <analysis source="#un">
+        <parliamentary>
+          <voting outcome="adoptedWithoutVote">
+            <quorum value=""></quorum>
+          </voting>
+        </parliamentary>
+      </analysis>
+      <!-- 引用模块：保留AKN4UN核心实体引用，精简非必要项 -->
+      <references source="#DGACM">
+        <TLCOrganization eId="source" href="/akn/ontology/organization/un/DGACM" showAs="DGACM"></TLCOrganization>
+        <TLCOrganization eId="ga" href="/akn/ontology/organization/un/generalAssembly" showAs="General Assembly"></TLCOrganization>
+        <TLCTerm eId="resolutionTitle" href="/akn/ontology/reference/un/resolutionTitle" showAs="Resolution title"></TLCTerm>
       </references>
+      <!-- AKN4UN专属排版模块：完整保留联合国专属扩展标签，符合官方格式要求 -->
+      <presentation source="#un">
+        <akn4un:footerFirstPage>
+          <akn4un:footerFirstPageLeft>
+            <akn4un:internalCode>
+              <docketNumber refersTo="#publicationJobNumber">25-04962 (E)</docketNumber>
+            </akn4un:internalCode>
+          </akn4un:footerFirstPageLeft>
+        </akn4un:footerFirstPage>
+      </presentation>
     </meta>
-    <body>
-      <section id="section_1">
-        <num>1</num>
-        <heading>Section Title</heading>
-        <paragraph id="para_1">
-          <content>
-            <p>Document content here...</p>
-          </content>
-        </paragraph>
-      </section>
-    </body>
-  </document>
+    <!-- 封面模块：完整保留AKN4UN决议封面标准标签与核心信息 -->
+    <coverPage eId="coverPage_1">
+      <p><docAuthority refersTo="#publisher">United Nations</docAuthority></p>
+      <p class="upperRight"><docNumber refersTo="#symbol">A/RES/79/275</docNumber></p>
+      <p><docAuthority refersTo="#issuingBody" class="rightBig">General Assembly</docAuthority></p>
+      <p><docDate date="2025-03-27" class="rightSmall" refersTo="#dateOfIssuance">27 March 2025</docDate></p>
+      <p><session refersTo="#generalAssembly" value="79" eId="coverPage_1__session_1">Seventy-ninth session</session></p>
+      <p><inline name="agenda item name">The role of diamonds in fuelling conflict</inline></p>
+      <p><docTitle>Resolution adopted by the General Assembly on 25 March 2025</docTitle></p>
+    </coverPage>
+    <!-- 序言模块：保留AKN4UN标准结构，精简大段重复表述，保留规范句式 -->
+    <preface>
+      <p>
+        <docNumber>79/275.</docNumber>
+        <docTitle refersTo="#resolutionTitle">
+          <span class="bold">The role of diamonds in fuelling conflict: breaking the link between the illicit transaction of rough diamonds and armed conflict</span>
+        </docTitle>
+      </p>
+    </preface>
+    <preamble>
+      <formula name="enactingFormula" eId="formula_1">
+        <p xml:space="preserve"><span class="italic">The General Assembly</span>,</p>
+      </formula>
+      <container name="Recognizing" eId="container_2">
+        <p xml:space="preserve">        <span class="italic">Recognizing</span> the harm of conflict diamonds in fuelling armed conflict and undermining international peace and security,</p>
+      </container>
+      <container name="Noting" eId="container_3">
+        <p xml:space="preserve">        <span class="italic">Noting</span> the key role of the Kimberley Process in curbing conflict diamond trade and supporting sustainable development,</p>
+      </container>
+    </preamble>
+    <!-- 正文模块：保留AKN4UN标准段落、列表、编号规范，精简为核心条款示例 -->
+    <mainBody>
+      <paragraph eId="para_1" class="MercuryDocument">
+        <num>1.</num>
+        <content eId="para_1__content">
+          <p xml:space="preserve">        <span class="italic">Recognizes</span> the role of the Kimberley Process Certification Scheme in preventing conflict diamonds and fuelling conflicts;</p>
+        </content>
+      </paragraph>
+      <paragraph eId="para_2" class="MercuryDocument">
+        <num>2.</num>
+        <list eId="para_2_list">
+          <intro eId="para_2_list_intro"><p xml:space="preserve">        <span class="italic">Recalls</span> the mandate of the Ad Hoc Committee on Review and Reform:</p></intro>
+          <point eId="para_2_list_point_a"><num>(a)</num><content><p xml:space="preserve">To define conflict diamonds matching current conflict realities;</p></content></point>
+          <point eId="para_2_list_point_b"><num>(b)</num><content><p xml:space="preserve">To strengthen scheme implementation and technical cooperation;</p></content></point>
+        </list>
+      </paragraph>
+      <paragraph eId="para_3" class="MercuryDocument">
+        <num>3.</num>
+        <content eId="para_3__content">
+          <p xml:space="preserve">        <span class="italic">Requests</span> the Kimberley Process Chair to submit a progress report to the General Assembly;</p>
+        </content>
+      </paragraph>
+    </mainBody>
+    <!-- 结论模块：完整保留AKN4UN通过信息规范标签 -->
+    <conclusions eId="conclusions">
+      <p>
+        <event refersTo="#adoption">
+          <location title="62nd" refersTo="#adoptionMeeting">62nd plenary meeting</location>
+          <eol />
+          <docDate date="2025-03-25" refersTo="#adoptionDate">25 March 2025</docDate>
+        </event>
+      </p>
+    </conclusions>
+  </statement>
 </akomaNtoso>
 
 请根据用户提供的内容进行相应的操作。`

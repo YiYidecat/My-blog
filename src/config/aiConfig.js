@@ -12,7 +12,7 @@ const defaultAIConfig = {
       apiKey: import.meta.env.VITE_DEEPSEEK_API_KEY || '', // 从环境变量获取API密钥
       model: 'deepseek-chat',
       temperature: 0.7,
-      maxTokens: 2048
+      maxTokens: 8192
     },
     kimi: {
       apiKey: '',

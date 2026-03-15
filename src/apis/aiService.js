@@ -83,7 +83,7 @@ class AIService {
           { role: 'user', content: prompt }
         ],
         temperature: settings.temperature || options.temperature || 0.7,
-        max_tokens: settings.maxTokens || options.maxTokens || 2048,
+        max_tokens: settings.maxTokens || options.maxTokens || 8192,
         stream: false
       })
     });
