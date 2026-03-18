@@ -12,6 +12,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@tiptap/extension-placeholder": "^3.20.3",
+    "@tiptap/starter-kit": "^3.20.3",
+    "@tiptap/vue-3": "^3.20.3",
     "axios": "^1.13.2",
     "element-plus": "^2.13.1",
     "pinia": "^3.0.4",

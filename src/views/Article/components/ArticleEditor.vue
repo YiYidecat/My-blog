@@ -73,10 +73,8 @@
                     <el-button @click="switchToXmlMode" size="small">切换到XML编辑</el-button>
                   </div>
                   <div class="visual-content">
-                    <el-input
+                    <RichTextEditor
                       v-model="article.content"
-                      type="textarea"
-                      :rows="15"
                       placeholder="在此输入文章内容..."
                     />
                   </div>
@@ -213,10 +211,13 @@ const user = ref({
   commentsCount: 0
 })
 
+import RichTextEditor from './RichTextEditor.vue'
+
 // Components
 defineOptions({
   components: {
-    AIChatAssistant
+    AIChatAssistant,
+    RichTextEditor
   }
 })
 

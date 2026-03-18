@@ -294,9 +294,10 @@ const getModelName = (model) => {
 
 const addMessage = (role, content) => {
   messages.value.push({ role, content })
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom, nextTick确保DOM更新完成后滚动
   nextTick(() => {
-    if (messagesContainer.value) {
+    if (messagesContainer.value) { //messagesContainer.value: 这是一个指向聊天窗口容器 DOM 元素的引用（通常通过 <div ref="messagesContainer"> 绑定）
+      // 将滚动条位置 (scrollTop) 设置为内容的总高度 (scrollHeight)，视觉效果就是瞬间滚动到最底部
       messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
     }
   })
@@ -352,6 +353,8 @@ const sendMessage = async () => {
     })
     
     addMessage('assistant', aiResponse)
+    // 打印输出一下AI返回的格式，方便进行标签
+    console.log('AI Response:', aiResponse)
     
     // Check if response contains XML conversion request
     if (aiResponse.includes('<akomaNtoso') && aiResponse.includes('</akomaNtoso>')) {
