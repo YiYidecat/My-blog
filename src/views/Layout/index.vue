@@ -177,9 +177,9 @@ const posts = ref([])
 const categories = ref([])
 const recentComments = ref([])
 const user = ref({
-  username: '',
-  avatar: '',
-  bio: '',
+  username: '游客',
+  avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+  bio: '专注于技术分享与交流',
   postsCount: 0,
   articlesCount: 0,
   commentsCount: 0
@@ -268,7 +268,7 @@ const fetchData = async () => {
     if (userStore.user) {
       user.value = userStore.user
     } else {
-      const userData = await UserAPI.getUserById(0) // 获取ID为0的默认用户
+      const userData = await UserAPI.getUserById(1) // 获取ID为1的默认用户——游客用户
       user.value = userData
     }
     

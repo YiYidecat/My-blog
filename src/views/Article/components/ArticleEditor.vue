@@ -510,26 +510,19 @@ const clearContent = () => {
   })
 }
 
-// 获取下一个可用的ID
-const getNextId = async () => {
-  try {
-    const allPosts = await PostAPI.getAllPosts()
-    const currentUser = userStore.user?.username || userStore.user?.name || '墨语'
-    
-    // 找出当前用户的所有文章ID
-    const userPostIds = allPosts
-      .filter(post => post.author === currentUser)
-      .map(post => parseInt(post.id))
-      .filter(id => !isNaN(id)) // 确保ID是数字
-    
-    // 找到最大的ID，加1作为新ID
-    const maxId = userPostIds.length > 0 ? Math.max(...userPostIds) : 0
-    return maxId + 1
-  } catch (error) {
-    console.error('获取下一个ID失败:', error)
-    // 如果获取失败，返回一个默认值
-    return 1
+// 生成UUID作为新ID
+const generateNewId = () => {
+  // 使用浏览器内置的crypto API生成UUID
+  if (window.crypto && window.crypto.randomUUID) {
+    return crypto.randomUUID();
   }
+  
+  // 如果浏览器不支持crypto.randomUUID，则手动生成UUID v4
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 // 发布文章
@@ -547,18 +540,26 @@ const publishArticle = async () => {
 
     if (!article.value.id || article.value.id === '') {
       // 发布新文章，生成新ID
-      const newId = await getNextId()
-      articleData.id = newId.toString() // 确保ID是字符串类型
+      const newId = generateNewId()
+      articleData.id = newId // UUID已经是字符串类型
       
       const response = await PostAPI.createPost(articleData)
-      // JSON Server会返回完整的文章对象，包括新分配的ID
+      // 后端会返回完整的文章对象，包括新分配的ID
       article.value = { ...response }
       ElMessage.success('文章已发布')
     } else {
       // 更新并发布文章
       await PostAPI.updatePost(article.value.id, articleData)
-      ElMessage.success('文章已发布')
+
+      ElMessage.success('文章更新并已发布')
     }
+
+    // 发布成功后清除相关草稿缓存
+    // 从用户store当中获取当前用户的ID
+    const userId = userStore.user?.id || '1'
+    const key = `draft_${userId}_cache`
+    localStorage.removeItem(key)
+    
   } catch (error) {
     console.error('发布文章失败:', error)
     ElMessage.error('发布文章失败')

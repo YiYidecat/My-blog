@@ -65,7 +65,7 @@ const userStore = useUserStore()
 
 // 初始化用户信息
 const user = ref({
-  username: '墨语',
+  username: '游客',
   avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
   bio: '专注于技术分享与交流',
   postsCount: 0,

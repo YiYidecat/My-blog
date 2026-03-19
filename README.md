@@ -1,14 +1,149 @@
 # Vue 3 + Vite 博客系统
 
-1. 这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。该项目也搭载了一个简单的展示个人简历的入口，用户可以在博客系统中查看和下载简历，同时还集成了一个基于AI（调用DeepSeek API和Ollama本地部署大模型）的智能问答功能，用来处理AKN4UN XML格式的文档，该模块被集成到了写文章的页面当中，需要用户登录才能使用，拉取该项目之后需要你自己在config->aiConfig
+这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。该项目也搭载了一个简单的展示个人简历的入口，用户可以在博客系统中查看和下载简历，同时还集成了一个基于AI（调用DeepSeek API和Ollama本地部署大模型）的智能问答功能，用来处理AKN4UN XML格式的文档，该模块被集成到了写文章的页面当中，需要用户登录才能使用，拉取该项目之后需要你自己在config->aiConfig
 文件当中部署自己的DeepSeek API密钥或者Ollama本地部署大模型的URL。
-2. 该项目有两种调取数据的方式，当在本地运行的时候，数据会从本地的 `json-server` 获取；当部署到 GitHub Pages 上时，数据会从静态的 JSON 文件获取。具体的配置看request.js文件中的baseURL配置。
-3. 项目使用了 Hash 路由以兼容 GitHub Pages 的部署方式，API 请求会根据环境自动切换到适当的端点。在 GitHub Pages 上，API 数据来自静态 JSON 文件。
-4. 你可以查看项目的[在线演示](https://yiyidecat.github.io/My-blog/)，但是由于我没有上传我的DeepSeek API密钥，所以在线使用智能问答功能时会报错，并且由于该网站只能展示静态资源，所以发布文章和与ai交互的功能是不能在线使用的。
+
+本项目支持三种不同的数据获取方式，可根据不同使用场景灵活选择：
+
+## 三种数据获取方式
+
+### 1. MySQL + FastAPI 后端服务方式
+
+此方式适用于完整功能开发和生产环境使用，具有完整的数据持久化能力。
+
+#### 配置步骤：
+1. **安装并配置MySQL数据库**
+   - 下载并安装MySQL服务
+   - 创建数据库：`CREATE DATABASE blog_db;`
+   - 确保MySQL服务正在运行
+
+2. **配置数据库连接**
+   - 在 `backend/database.py` 中设置数据库连接参数
+   - 推荐使用环境变量设置敏感信息：
+     ```bash
+     # 设置环境变量（Linux/Mac）
+     export DB_USER=your_username
+     export DB_PASSWORD=your_password
+     export DB_HOST=localhost
+     export DB_PORT=3306
+     export DB_NAME=blog_db
+     ```
+     
+     ```cmd
+     # 设置环境变量（Windows）
+     set DB_USER=your_username
+     set DB_PASSWORD=your_password
+     set DB_HOST=localhost
+     set DB_PORT=3306
+     set DB_NAME=blog_db
+     ```
+
+3. **安装Python依赖**
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
+
+4. **启动后端服务**
+   ```bash
+   # Windows
+   Set-Location "d:\Code\JS\my-blog\backend"; python -m uvicorn main:app --host 0.0.0.0 --port 8001
+   
+   # 或使用启动脚本
+   cd backend
+   .\start_server.bat
+   ```
+
+5. **启动前端服务**
+   ```bash
+   npm run dev
+   ```
+
+6. **前端配置**
+   - 前端会自动检测环境并使用 `http://localhost:8001` 作为API端点
+   - 所有数据操作将通过FastAPI接口与MySQL数据库交互
+
+#### 特点：
+- 完整的CRUD功能
+- 用户认证和授权
+- 实时数据同步
+- 支持所有业务功能（文章发布、评论、点赞等）
+
+### 2. Json-server Mock数据方式
+
+此方式适用于前端开发和功能测试，无需配置数据库，使用模拟数据。
+
+#### 配置步骤：
+1. **安装json-server**
+   ```bash
+   npm install -g json-server
+   ```
+
+2. **启动json-server服务**
+   ```bash
+   # 在项目根目录下启动
+   json-server --watch db.json --port 3000
+   ```
+
+3. **启动前端开发服务器**
+   ```bash
+   npm run dev
+   ```
+
+4. **前端配置**
+   - 前端会自动检测环境并使用 `http://localhost:3000` 作为API端点
+   - 数据来自 `db.json` 文件中的模拟数据
+
+#### 特点：
+- 快速启动，无需数据库配置
+- 适合前端界面开发
+- 支持数据的增删改查（临时存储在内存中）
+- 部分高级功能可能受限
+
+### 3. GitHub Pages 静态数据方式
+
+此方式适用于部署到GitHub Pages，使用静态JSON文件提供数据，但部分动态功能受限。
+
+#### 部署步骤：
+1. **构建项目**
+   ```bash
+   npm run build
+   ```
+
+2. **部署到GitHub Pages**
+   - 方式1（推荐）：使用GitHub Actions
+     - 确保仓库名为 `yourusername.github.io` 或者 `your-repo-name`
+     - 将代码推送到 `master` 分支
+     - GitHub Actions 会在 `.github/workflows/deploy.yml` 中自动构建并部署
+   
+   - 方式2：手动部署
+     - 将 `dist` 目录中的内容部署到 GitHub Pages
+
+3. **数据获取方式**
+   - 前端会自动检测为GitHub Pages环境，使用 `./api` 作为API端点
+   - 所有数据从 `public/api/*.json` 静态文件获取
+
+#### 在线演示
+你可以查看项目的[在线演示](https://yiyidecat.github.io/My-blog/)，但请注意：
+- 由于没有上传DeepSeek API密钥，智能问答功能会报错
+- 网站只能展示静态资源，发布文章、与AI交互、用户登录等动态功能无法使用
+- 所有数据显示为静态内容，无法进行任何数据修改操作
+
+#### 特点：
+- 无需后端服务
+- 免费托管
+- 适合展示和分享
+- **限制**：不支持数据修改、用户认证、实时交互等动态功能
 
 ## 本地开发
 
-！！！！！！！！注意：运行项目前请先启动后端API服务：json-server --watch db.json --port 3000。
+！！！！！！！！注意：
+1. 运行项目前请先启动后端API服务：
+Set-Location "d:\Code\JS\my-blog\backend"; python -m uvicorn main:app --host 0.0.0.0 --port 8001
+2. 或者如果你想使用mock数据测试前端功能，可以在项目根目录下运行
+json-server --watch db.json --port 3000。
+3. 启动前端开发服务器：
+npm run dev
 
 ### 1. 安装依赖
 ```bash
@@ -18,10 +153,12 @@ npm install
 
 ### 2. 启动后端API服务
 ```bash
-# 方法1：使用npm脚本
-npm run server
+# 方法1：启用Mysql数据库并启动FastAPI服务
+先在backend目录下的database.py文件当中配置好你的MySQL数据库连接参数，然后运行以下命令：
 
-# 方法2：手动启动
+Set-Location "d:\Code\JS\my-blog\backend"; python -m uvicorn main:app --host 0.0.0.0 --port 8001
+
+# 方法2：手动启动json-server服务
 json-server --watch db.json --port 3000
 ```
 
@@ -31,10 +168,12 @@ npm run dev
 ```
 
 ### 4. 用户登录
-可以使用以下测试账号登录：
+可以使用以下测试账号登录（仅在MySQL+FastAPI模式下有效）：
 - 用户名：`前端小白`  
 - 密码：`frontend123`
 
+- 用户名：`后端老手  `  
+- 密码：`backend123`   
 
 ## 部署到 GitHub Pages
 

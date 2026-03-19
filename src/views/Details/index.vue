@@ -216,7 +216,7 @@ const fetchUserData = async () => {
     if (userStore.user) {
       user.value = userStore.user
     } else {
-      const userData = await UserAPI.getUserById(0) // 获取ID为0的默认用户
+      const userData = await UserAPI.getUserById(1) // 获取ID为1的默认用户——游客用户
       user.value = userData
     }
   } catch (error) {

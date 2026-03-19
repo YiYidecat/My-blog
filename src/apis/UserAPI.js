@@ -34,5 +34,10 @@ export const UserAPI = {
    */
   deleteUser: (id) => api.delete(`/users/${id}`),
 
+  /**
+   * 用户认证
+   */
+  authenticateUser: (credentials) => api.post('/users/authenticate', credentials)
+
 
 }

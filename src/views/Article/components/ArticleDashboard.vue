@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { PostAPI, CategoryAPI } from '@/apis'
@@ -68,6 +68,7 @@ import { useUserStore } from '@/stores/userStore.js'
 
 const router = useRouter()
 const userStore = useUserStore()
+const route = useRoute()
 
 // 响应式数据
 const articles = ref([])
@@ -87,11 +88,14 @@ const fetchArticles = async () => {
     const currentUser = userStore.user?.username || userStore.user?.name || '墨语' // 从用户store获取当前用户名
     const userArticles = allPosts.filter(post => post.author === currentUser)
     
-    articles.value = userArticles
-    filteredArticles.value = userArticles
+    // 按发布日期降序排序（最新的在前面）
+    const sortedUserArticles = userArticles.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
+    
+    articles.value = sortedUserArticles
+    filteredArticles.value = sortedUserArticles
     
     // 提取所有唯一分类
-    const uniqueCategories = [...new Set(userArticles.map(post => post.category))]
+    const uniqueCategories = [...new Set(sortedUserArticles.map(post => post.category))]
     categories.value = uniqueCategories.map((name, index) => ({ id: index + 1, name }))
   } catch (error) {
     console.error('获取文章列表失败:', error)
@@ -160,6 +164,8 @@ const deleteArticle = async (articleId) => {
     await PostAPI.deletePost(articleId)
     // 从本地列表中移除
     articles.value = articles.value.filter(article => article.id !== articleId)
+    // 重新排序并过滤
+    articles.value.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
     filterArticles()
     ElMessage.success('删除成功')
   } catch (error) {
@@ -178,6 +184,14 @@ const handleRowClick = (row) => {
 onMounted(() => {
   fetchArticles()
 })
+
+// 监听路由变化，以便在文章编辑后返回时刷新列表
+watch(
+  () => route.fullPath,
+  () => {
+    fetchArticles()
+  }
+)
 </script>
 
 <style scoped>

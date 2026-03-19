@@ -5,8 +5,8 @@ import { useUserStore } from '@/stores/userStore.js'
 const isGitHubPages = window.location.hostname.includes('github.io');
 
 // 根据环境设置API基础URL
-// 在本地开发时使用 http://localhost:3000，GitHub Pages时使用 ./api
-const baseURL = isGitHubPages ? './api' : 'http://localhost:3000';
+// 在本地开发时使用 http://localhost:8001（FastAPI服务器），GitHub Pages时使用 ./api 
+const baseURL = isGitHubPages ? './api' : 'http://localhost:8001';
 
 const api = axios.create({
   baseURL: baseURL,

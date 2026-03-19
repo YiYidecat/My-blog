@@ -53,22 +53,22 @@ const loginForm = ref({
 
 const handleLogin = async () => {
   try {
-    // 首先尝试从API获取所有用户
-    const users = await UserAPI.getAllUsers()
+    // 直接调用后端的认证接口
+    const response = await UserAPI.authenticateUser({
+      username: loginForm.value.username,
+      password: loginForm.value.password
+    })
     
-    // 查找匹配的用户(在template当中使用双向绑定v-model绑定loginForm.username和loginForm.password)
-    const user = users.find(u => u.username === loginForm.value.username && u.password === loginForm.value.password)
-    
-    if (user) {
+    if (response && response.id) {
       // 登录成功，保存用户信息到store
-      userStore.login(user)
-      console.log("登录的用户是", user)
+      userStore.login(response)
+      console.log("登录的用户是", response)
 
       // 显示成功消息
       ElMessage.success('登录成功')
       
       // 跳转到当前用户的仪表盘页面
-      router.push(`/dashboard/${user.id}`)
+      router.push(`/dashboard/${response.id}`)
     } else {
       // 登录失败
       ElMessage.error('用户名或密码错误')
