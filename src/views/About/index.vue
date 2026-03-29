@@ -1,28 +1,21 @@
 <template>
   <div class="cnblogs-fullscreen">
     <div class="inner-wrapper">
-      <!-- 顶部导航栏 -->
       <Header />
 
-      <!-- 主体内容 -->
       <div class="main-body">
         <div class="content-inner">
-          <!-- 左侧内容 -->
           <div class="content-left">
-            <div class="profile-container">
-              <h1 class="profile-title">个人中心</h1>
-              <div class="profile-nav">
-                 <router-link to="/profile" class="nav-item" active-class="active">浏览历史</router-link>
-               </div>
-              <div class="profile-content">
-                <router-view />
-              </div>
+            <div class="about-container">
+              <h2 class="page-title">关于本项目</h2>
+              <p class="page-subtitle">以下内容来自仓库根目录的 README.md，修改该文件后保存即可在开发模式下即时更新</p>
+
+              <!-- 使用marked库解析README.md文件 -->
+              <article class="readme-body" v-html="readmeHtml"></article>
             </div>
           </div>
 
-          <!-- 右侧边栏 -->
           <div class="sidebar-right">
-            <!-- 博主信息 -->
             <div class="sidebar-section">
               <h3 class="sidebar-title">博主信息</h3>
               <div class="author-info">
@@ -54,30 +47,34 @@
               </div>
             </div>
 
-            <!-- 快捷入口 -->
             <div class="sidebar-section">
-              <h3 class="sidebar-title">快捷入口</h3>
-              <div class="quick-links">
-                <router-link to="/" class="quick-link">首页</router-link>
-                <router-link :to="`/dashboard/${userStore.user.id}/editor/new`" class="quick-link">写文章</router-link>
-                <router-link to="/about" class="quick-link">关于</router-link>
-              </div>
+              <h3 class="sidebar-title">热门分类</h3>
+              <ul class="recent-posts">
+                <li
+                  v-for="category in hotCategories"
+                  :key="category.id"
+                  class="recent-post-item"
+                  @click="goToCategoryDetail(category)"
+                >
+                  <div class="recent-post-link">
+                    <span class="post-title">{{ category.name }}</span>
+                    <span class="post-count">({{ category.count }})</span>
+                  </div>
+                </li>
+              </ul>
             </div>
 
-            <!-- 登录入口或功能入口 -->
             <div class="sidebar-section login-section">
-              <h3 class="sidebar-title">账户操作</h3>
-              
-              <!-- 登录状态下显示功能入口 -->
+              <h3 class="sidebar-title">访问入口</h3>
+
               <template v-if="userStore.token === '1'">
                 <p class="login-prompt">欢迎回来，{{ user.username }}！</p>
                 <div class="login-buttons">
-                  <button @click="goToSettings" class="login-button">设置</button>
-                  <button @click="handleLogout" class="register-button">退出登录</button>
+                  <router-link :to="`/dashboard/${userStore.user.id}/editor/new`" class="login-button">写文章</router-link>
+                  <router-link :to="`/dashboard/${userStore.user.id}/settings`" class="register-button">设置</router-link>
                 </div>
               </template>
-              
-              <!-- 非登录状态下显示登录入口 -->
+
               <template v-else>
                 <p class="login-prompt">立即登录，发布你的第一篇博客</p>
                 <div class="login-buttons">
@@ -90,25 +87,25 @@
         </div>
       </div>
 
-      <!-- 页脚 -->
       <Footer />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { marked } from 'marked'
+import { CategoryAPI } from '@/apis'
 import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage } from 'element-plus'
 import { UserAPI } from '@/apis'
 import Header from '@/views/Layout/components/Header.vue'
 import Footer from '@/views/Layout/components/Footer.vue'
 
-const router = useRouter()
-const userStore = useUserStore()
+import readmeSource from '../../../README.md?raw'
 
-// 用户信息
+const hotCategories = ref([])
 const user = ref({
   username: '',
   avatar: '',
@@ -118,25 +115,34 @@ const user = ref({
   commentsCount: 0
 })
 
-// 跳转到设置页
-const goToSettings = () => {
-  router.push('/settings')
+const router = useRouter()
+const userStore = useUserStore()
+
+marked.setOptions({
+  gfm: true,
+  breaks: true
+})
+
+const readmeHtml = computed(() => marked.parse(readmeSource))
+
+const fetchCategories = async () => {
+  try {
+    const data = await CategoryAPI.getAllCategories()
+    const list = data || []
+    const sorted = [...list].sort((a, b) => b.count - a.count)
+    hotCategories.value = sorted.slice(0, 5)
+  } catch (error) {
+    console.error('获取分类数据失败:', error)
+    ElMessage.error('获取分类数据失败')
+  }
 }
 
-// 处理退出登录
-const handleLogout = () => {
-  userStore.logout()
-  ElMessage.success('已退出登录')
-  router.push('/login')
-}
-
-// 从 API 获取用户数据
 const fetchUserData = async () => {
   try {
     if (userStore.user) {
       user.value = userStore.user
     } else {
-      const userData = await UserAPI.getUserById(0) // 获取ID为0的默认用户
+      const userData = await UserAPI.getUserById(1)
       user.value = userData
     }
   } catch (error) {
@@ -144,13 +150,17 @@ const fetchUserData = async () => {
   }
 }
 
-onMounted(() => {
-  fetchUserData()
+const goToCategoryDetail = (category) => {
+  router.push({ path: '/', query: { category: category.name } })
+}
+
+onMounted(async () => {
+  await fetchCategories()
+  await fetchUserData()
 })
 </script>
 
 <style scoped>
-/* 继承 Layout 组件的样式 */
 .cnblogs-fullscreen {
   position: fixed;
   inset: 0;
@@ -210,48 +220,153 @@ onMounted(() => {
   box-sizing: border-box;
 }
 
-.profile-container {
+.about-container {
   width: 100%;
 }
 
-.profile-title {
-  color: #2c3e50;
+.page-title {
   font-size: 28px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #009688;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  text-align: center;
 }
 
-.profile-nav {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+.page-subtitle {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-.nav-item {
-  padding: 8px 16px;
-  text-decoration: none;
-  color: #555;
+.readme-body {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #333;
+  text-align: left;
+}
+
+.readme-body :deep(h1) {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 1.25em 0 0.75em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid #eaecef;
+  color: #24292f;
+}
+
+.readme-body :deep(h2) {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 1.5em 0 0.65em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #eaecef;
+  color: #24292f;
+}
+
+.readme-body :deep(h3) {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.25em 0 0.5em;
+  color: #24292f;
+}
+
+.readme-body :deep(h4) {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1em 0 0.5em;
+}
+
+.readme-body :deep(p) {
+  margin: 0.65em 0;
+}
+
+.readme-body :deep(ul),
+.readme-body :deep(ol) {
+  margin: 0.65em 0;
+  padding-left: 1.75em;
+}
+
+.readme-body :deep(li) {
+  margin: 0.25em 0;
+}
+
+.readme-body :deep(blockquote) {
+  margin: 0.85em 0;
+  padding: 0 1em;
+  color: #57606a;
+  border-left: 4px solid #d0d7de;
+}
+
+.readme-body :deep(pre) {
+  margin: 1em 0;
+  padding: 14px 16px;
+  overflow: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  background-color: #f6f8fa;
+  border-radius: 8px;
+  border: 1px solid #e1e4e8;
+}
+
+.readme-body :deep(code) {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.readme-body :deep(p code),
+.readme-body :deep(li code) {
+  padding: 0.15em 0.45em;
+  background-color: #f6f8fa;
   border-radius: 4px;
-  transition: all 0.3s;
-  border: 1px solid #ddd;
+  border: 1px solid #e8eaed;
 }
 
-.nav-item:hover {
-  background-color: #f5f5f5;
+.readme-body :deep(pre code) {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.readme-body :deep(a) {
   color: #009688;
+  text-decoration: none;
 }
 
-.nav-item.active {
-  background-color: #009688;
-  color: white;
-  border-color: #009688;
+.readme-body :deep(a:hover) {
+  text-decoration: underline;
 }
 
-.profile-content {
-  padding-top: 20px;
+.readme-body :deep(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 14px;
+}
+
+.readme-body :deep(th),
+.readme-body :deep(td) {
+  border: 1px solid #dfe2e5;
+  padding: 8px 12px;
+}
+
+.readme-body :deep(th) {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+.readme-body :deep(hr) {
+  margin: 1.5em 0;
+  border: none;
+  border-top: 1px solid #eaecef;
+}
+
+.readme-body :deep(img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
 }
 
 .sidebar-right {
@@ -335,25 +450,43 @@ onMounted(() => {
   margin-top: 5px;
 }
 
-.quick-links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.recent-posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.quick-link {
-  padding: 10px;
+.recent-post-item {
+  border-bottom: 1px solid #f5f5f5;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recent-post-item:hover {
+  background-color: #f5f5f5;
+}
+
+.recent-post-link {
+  display: flex;
+  justify-content: space-between;
   text-decoration: none;
   color: #555;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  transition: all 0.3s;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: color 0.3s;
 }
 
-.quick-link:hover {
-  background-color: #f5f5f5;
+.recent-post-link:hover {
   color: #009688;
-  border-color: #009688;
+}
+
+.post-title {
+  flex: 1;
+}
+
+.post-count {
+  color: #999;
 }
 
 .login-section {
@@ -373,7 +506,8 @@ onMounted(() => {
   flex-direction: column;
 }
 
-.login-button, .register-button {
+.login-button,
+.register-button {
   padding: 10px 25px;
   border-radius: 4px;
   text-decoration: none;

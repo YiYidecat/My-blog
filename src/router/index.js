@@ -44,6 +44,18 @@ const routes = [
     component: () => import('../views/Details/index.vue'),
     props: true
   },
+  // 分类页面路由
+  {
+    path: '/categories',
+    name: 'categories',
+    component: () => import('../views/Categories/index.vue')
+  },
+  // about 页面路由,介绍本项目
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('../views/About/index.vue')
+  },
   // 主页路由（使用统一布局）
   {
     path: '/',
@@ -64,17 +76,6 @@ const routes = [
       //   path: 'archive',
       //   name: 'archive',
       //   component: () => import('../views/ArchiveView.vue') // 归档页面
-      // },
-      // {
-      //   path: 'about',
-      //   name: 'about',
-      //   component: () => import('../views/AboutView.vue') // 关于页面
-      // },
-      // {
-      //   path: 'post/:id',
-      //   name: 'post-detail',
-      //   component: () => import('../views/PostDetailView.vue'), // 文章详情页
-      //   props: true
       // }
     ]
   },
@@ -87,19 +88,6 @@ const routes = [
       {
         path: '',
         name: 'profile-history',
-        component: () => import('../views/Profile/components/History.vue') // 浏览历史模块
-      }
-    ]
-  },
-  // 简化版个人资料路由
-  {
-    path: '/profile',
-    name: 'simple-profile',
-    component: () => import('../views/Profile/index.vue'),
-    children: [
-      {
-        path: '',
-        name: 'simple-profile-history',
         component: () => import('../views/Profile/components/History.vue') // 浏览历史模块
       }
     ]
@@ -125,11 +113,6 @@ const routes = [
       //   path: 'favorites',
       //   name: 'favorites',
       //   component: () => import('../views/Dashboard/FavoritesView.vue') // 收藏
-      // },
-      // {
-      //   path: 'editor',
-      //   name: 'editor',
-      //   component: () => import('../views/Dashboard/EditorView.vue') // 编辑器
       // },
       // {
       //   path: 'settings',

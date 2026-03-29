@@ -547,9 +547,66 @@ const publishArticle = async () => {
       // 后端会返回完整的文章对象，包括新分配的ID
       article.value = { ...response }
       ElMessage.success('文章已发布')
+      
+      // 更新分类计数
+      if (article.value.category) {
+        try {
+          // 先获取当前分类信息
+          const allCategories = await CategoryAPI.getAllCategories()
+          const targetCategory = allCategories.find(cat => cat.name === article.value.category)
+          
+          if (targetCategory) {
+            // 更新分类计数（增加1）
+            const newCount = (targetCategory.count || 0) + 1
+            // 确保ID是整数类型，因为数据库中的ID是整数
+            const categoryId = parseInt(targetCategory.id)
+            await CategoryAPI.updateCategoryCount(categoryId, newCount)
+          } else {
+            console.warn(`未找到分类: ${article.value.category}`)
+          }
+        } catch (categoryError) {
+          console.error('更新分类计数失败:', categoryError)
+          // 不抛出错误，因为即使分类计数更新失败，文章也已经发布成功
+        }
+      }
     } else {
       // 更新并发布文章
+      // 检查分类是否发生变化，如果变化则需要更新旧分类和新分类的计数
+      const oldArticle = await PostAPI.getPostById(article.value.id)
+      const oldCategory = oldArticle.category
+      const newCategory = articleData.category
+      
       await PostAPI.updatePost(article.value.id, articleData)
+      
+      // 如果分类发生了变化，更新分类计数
+      if (oldCategory !== newCategory) {
+        try {
+          const allCategories = await CategoryAPI.getAllCategories()
+          
+          // 更新旧分类计数（减少1）
+          if (oldCategory) {
+            const oldCat = allCategories.find(cat => cat.name === oldCategory)
+            if (oldCat) {
+              const newCount = Math.max(0, (oldCat.count || 0) - 1) // 确保计数不小于0
+              const categoryId = parseInt(oldCat.id)
+              await CategoryAPI.updateCategoryCount(categoryId, newCount)
+            }
+          }
+          
+          // 更新新分类计数（增加1）
+          if (newCategory) {
+            const newCat = allCategories.find(cat => cat.name === newCategory)
+            if (newCat) {
+              const newCount = (newCat.count || 0) + 1
+              const categoryId = parseInt(newCat.id)
+              await CategoryAPI.updateCategoryCount(categoryId, newCount)
+            }
+          }
+        } catch (categoryError) {
+          console.error('更新分类计数失败:', categoryError)
+          // 不抛出错误，因为即使分类计数更新失败，文章也已经更新成功
+        }
+      }
 
       ElMessage.success('文章更新并已发布')
     }

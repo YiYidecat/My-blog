@@ -146,6 +146,16 @@ def create_category(db: Session, category: CategoryCreate):
     db.refresh(db_category)
     return db_category
 
+def update_category_count(db: Session, category_id: int, count: int):
+    category = db.query(Category).filter(Category.id == category_id).first()
+    if not category:
+        return None
+    
+    category.count = count
+    db.commit()
+    db.refresh(category)
+    return category
+
 def get_comments(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Comment).offset(skip).limit(limit).all()
 

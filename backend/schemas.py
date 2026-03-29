@@ -77,6 +77,9 @@ class CategoryBase(BaseModel):
 class CategoryCreate(CategoryBase):
     pass
 
+class CategoryCountUpdate(BaseModel):
+    count: int
+
 class Category(CategoryBase):
     id: int
     

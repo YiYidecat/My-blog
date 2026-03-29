@@ -9,67 +9,44 @@
         <div class="content-inner">
           <!-- 左侧内容区域 -->
           <div class="content-left">
-            <div class="posts-container">
-              <div class="posts-header">
-                <h2 class="page-title">文章列表</h2>
-                <div class="filter-section">
-                  <el-select 
-                    v-model="selectedCategory" 
-                    placeholder="请选择分类" 
-                    clearable
-                    @change="onCategoryChange"
-                    class="category-filter"
-                  >
-                    <el-option 
-                      v-for="category in categories" 
-                      :key="category.id" 
-                      :label="category.name" 
-                      :value="category.name"
-                    />
-                  </el-select>
-                </div>
-              </div>
-
-              <div v-if="filteredPosts.length > 0" class="posts-grid">
+            <div class="categories-container">
+              <h2 class="page-title">文章分类</h2>
+              <p class="page-subtitle">浏览不同分类下的文章，快速找到感兴趣的内容</p>
+              
+              <!-- 分类卡片网格 -->
+              <div class="categories-grid">
                 <div 
-                  v-for="post in filteredPosts" 
-                  :key="post.id" 
-                  class="post-card"
-                  @click="goToPostDetail(post)"
+                  v-for="category in categories" 
+                  :key="category.id" 
+                  class="category-card"
+                  @click="goToCategoryDetail(category)"
                 >
-                  <h3 class="post-title">{{ post.title }}</h3>
-                  <div class="post-meta">
-                    <span class="post-author">作者: {{ post.author }}</span>
-                    <span class="post-date">日期: {{ post.publishDate }}</span>
-                    <span class="post-category">分类: {{ post.category }}</span>
+                  <div class="category-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.89L8 2H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+                    </svg>
                   </div>
-                  <p class="post-excerpt">{{ post.content.slice(0, 150) }}...</p>
-                  <div class="post-stats">
-                    <span class="post-likes">❤️ {{ post.likes || 0 }} 赞</span>
-                    <span class="post-views">👁️ {{ post.views || 0 }} 浏览</span>
-                    <span class="post-comments">💬 {{ post.commentsCount || 0 }} 评论</span>
+                  <div class="category-info">
+                    <h3 class="category-name">{{ category.name }}</h3>
+                    <p class="category-count">{{ category.count }} 篇文章</p>
                   </div>
-                  <div class="post-tags">
-                    <el-tag 
-                      v-for="tag in post.tags || []" 
-                      :key="tag" 
-                      size="small" 
-                      style="margin-right: 5px;"
-                    >
-                      {{ tag }}
-                    </el-tag>
+                  <div class="category-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
                   </div>
                 </div>
               </div>
-
-              <div v-else class="empty-state">
+              
+              <!-- 空状态提示 -->
+              <div v-if="categories.length === 0" class="empty-state">
                 <div class="empty-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.89L8 2H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
                   </svg>
                 </div>
-                <h3 class="empty-title">暂无文章</h3>
-                <p class="empty-description">当前分类下还没有文章</p>
+                <h3 class="empty-title">暂无分类</h3>
+                <p class="empty-description">当前还没有任何文章分类</p>
               </div>
             </div>
           </div>
@@ -82,7 +59,7 @@
               <div class="author-info">
                 <div class="author-avatar">
                   <img
-                    :src="user.avatar || '/default-avatar.png'"
+                    :src="user.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
                     alt="博主头像"
                     class="avatar-img"
                   />
@@ -108,7 +85,7 @@
               </div>
             </div>
 
-            <!-- 热门分类 -->
+            <!-- 最近文章 -->
             <div class="sidebar-section">
               <h3 class="sidebar-title">热门分类</h3>
               <ul class="recent-posts">
@@ -116,7 +93,7 @@
                   v-for="category in hotCategories" 
                   :key="category.id" 
                   class="recent-post-item"
-                  @click="selectCategory(category.name)"
+                  @click="goToCategoryDetail(category)"
                 >
                   <div class="recent-post-link">
                     <span class="post-title">{{ category.name }}</span>
@@ -134,8 +111,8 @@
               <template v-if="userStore.token === '1'">
                 <p class="login-prompt">欢迎回来，{{ user.username }}！</p>
                 <div class="login-buttons">
-                  <router-link to="/editor" class="login-button">写文章</router-link>
-                  <router-link to="/settings" class="register-button">设置</router-link>
+                  <router-link :to="`/dashboard/${userStore.user.id}/editor/new`" class="login-button">写文章</router-link>
+                  <router-link :to="`/dashboard/${userStore.user.id}/settings`" class="register-button">设置</router-link>
                 </div>
               </template>
               
@@ -159,18 +136,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { PostAPI, CategoryAPI } from '@/apis'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { CategoryAPI } from '@/apis'
+import { PostAPI } from '@/apis'
 import { useUserStore } from '@/stores/userStore.js'
+import { ElMessage } from 'element-plus'
 import { UserAPI } from '@/apis'
 import Header from '@/views/Layout/components/Header.vue'
 import Footer from '@/views/Layout/components/Footer.vue'
 
-const posts = ref([])
 const categories = ref([])
 const hotCategories = ref([])
-const selectedCategory = ref('')
 const user = ref({
   username: '',
   avatar: '',
@@ -180,35 +157,36 @@ const user = ref({
   commentsCount: 0
 })
 
-const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 
-// 获取文章数据
-const loadPosts = async () => {
-  try {
-    const response = await PostAPI.getAllPosts()
-    posts.value = Array.isArray(response) ? response : (response || [])
-    console.log("加载到的文章:", posts.value)
-  } catch (error) {
-    console.error('加载文章失败:', error)
-    posts.value = []
-  }
-}
-
 // 获取分类数据
-const loadCategories = async () => {
+const fetchCategories = async () => {
   try {
-    const response = await CategoryAPI.getAllCategories()
-    categories.value = Array.isArray(response) ? response : (response || [])
+    // 获取所有分类和文章数据
+    const [categoriesData, postsData] = await Promise.all([
+      CategoryAPI.getAllCategories(),
+      PostAPI.getAllPosts()
+    ])
+    
+    // 计算每个分类的文章数量
+    const posts = Array.isArray(postsData) ? postsData : (postsData || [])
+    const categoriesWithCount = (Array.isArray(categoriesData) ? categoriesData : (categoriesData || [])).map(category => {
+      const count = posts.filter(post => post.category === category.name).length
+      return {
+        ...category,
+        count: count
+      }
+    })
+    
+    categories.value = categoriesWithCount
     
     // 按文章数量排序，获取热门分类
     const sortedCategories = [...categories.value].sort((a, b) => b.count - a.count)
     hotCategories.value = sortedCategories.slice(0, 5)
   } catch (error) {
-    console.error('加载分类失败:', error)
-    categories.value = []
-    hotCategories.value = []
+    console.error('获取分类数据失败:', error)
+    ElMessage.error('获取分类数据失败')
   }
 }
 
@@ -226,56 +204,17 @@ const fetchUserData = async () => {
   }
 }
 
-// 根据选中的分类过滤文章
-const filteredPosts = computed(() => {
-  if (!selectedCategory.value) {
-    return posts.value
-  }
-  return posts.value.filter(post => post.category === selectedCategory.value)
-})
+// 跳转到分类详情页面（目前暂时跳转到主页并带分类参数）
+const goToCategoryDetail = (category) => {
+  // 这里可以根据需要实现分类详情页或跳转到带分类筛选的文章列表
+  router.push({ path: '/', query: { category: category.name } })
+}
 
-// 当路由参数包含分类时，自动选中对应分类
+// 组件挂载时获取数据
 onMounted(async () => {
-  await loadPosts()
-  await loadCategories()
+  await fetchCategories()
   await fetchUserData()
-  
-  // 检查路由参数中是否有分类筛选条件
-  if (route.query.category) {
-    selectedCategory.value = route.query.category
-  }
 })
-
-// 分类选择变化处理
-const onCategoryChange = () => {
-  // 更新路由参数
-  if (selectedCategory.value) {
-    router.push({ path: '/', query: { category: selectedCategory.value } })
-  } else {
-    router.push({ path: '/' })
-  }
-}
-
-// 点击分类选择
-const selectCategory = (categoryName) => {
-  selectedCategory.value = categoryName
-  router.push({ path: '/', query: { category: categoryName } })
-}
-
-// 跳转到文章详情页
-const goToPostDetail = (post) => {
-  router.push(`/details/${post.id}/${post.author}`)
-}
-
-// 点赞功能
-const likePost = async (id) => {
-  try {
-    await PostAPI.updatePost(id, { likes: (posts.value.find(p => p.id === id)?.likes || 0) + 1 })
-    await loadPosts() // 重新加载数据
-  } catch (error) {
-    console.error('点赞失败:', error)
-  }
-}
 </script>
 
 <style scoped>
@@ -339,43 +278,35 @@ const likePost = async (id) => {
   box-sizing: border-box;
 }
 
-.posts-container {
+.categories-container {
   width: 100%;
 }
 
-.posts-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
-}
-
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin: 0;
+  margin-bottom: 10px;
   color: #333;
+  text-align: center;
 }
 
-.filter-section {
+.page-subtitle {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.category-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.category-filter {
-  min-width: 200px;
-}
-
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
-}
-
-.post-card {
   padding: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -385,46 +316,48 @@ const likePost = async (id) => {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.post-card:hover {
+.category-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-color: #009688;
 }
 
-.post-title {
+.category-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0f2f1;
+  border-radius: 8px;
+  margin-right: 15px;
+  color: #009688;
+}
+
+.category-info {
+  flex: 1;
+}
+
+.category-name {
   font-size: 18px;
   font-weight: 600;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   color: #333;
-  line-height: 1.4;
 }
 
-.post-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 10px;
-  font-size: 13px;
-  color: #666;
-}
-
-.post-excerpt {
+.category-count {
   font-size: 14px;
-  line-height: 1.6;
-  color: #555;
-  margin: 10px 0;
-}
-
-.post-stats {
-  display: flex;
-  gap: 15px;
-  margin: 10px 0;
-  font-size: 13px;
   color: #666;
+  margin: 0;
 }
 
-.post-tags {
-  margin-top: 10px;
+.category-arrow {
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.category-card:hover .category-arrow {
+  color: #009688;
 }
 
 .empty-state {
@@ -622,11 +555,11 @@ const likePost = async (id) => {
 }
 
 /* 添加平滑过渡动画 */
-.post-card {
+.category-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.posts-grid {
+.categories-grid {
   animation: fadeInUp 0.6s ease-out;
 }
 

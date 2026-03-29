@@ -28,4 +28,9 @@ export const CategoryAPI = {
    * 删除分类
    */
   deleteCategory: (id) => api.delete(`/categories/${id}`),
+
+  /**
+   * 更新分类文章计数
+   */
+  updateCategoryCount: (id, count) => api.patch(`/categories/${id}/count`, { count }),
 }

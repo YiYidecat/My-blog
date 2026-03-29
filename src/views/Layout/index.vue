@@ -9,8 +9,25 @@
         <div class="content-inner">
           <!-- 左侧文章列表 -->
           <div class="content-left">
+            <div v-if="route.query.category" class="category-filter-banner">
+              <span class="banner-label"
+                >当前分类：<strong>{{ route.query.category }}</strong></span
+              >
+              <router-link class="banner-clear" :to="{ path: '/' }">查看全部文章</router-link>
+            </div>
             <!-- 文章列表 -->
-            <div class="post-list">
+            <div v-if="filteredPosts.length === 0" class="empty-filter-state">
+              <p class="empty-filter-title">
+                {{ route.query.category ? '该分类下暂无文章' : '暂无文章' }}
+              </p>
+              <router-link
+                v-if="route.query.category"
+                class="banner-clear"
+                :to="{ path: '/' }"
+                >返回全部文章</router-link
+              >
+            </div>
+            <div class="post-list" v-else>
               <article v-for="post in getCurrentPagePosts()" :key="post.id" class="post-item">
                 <div class="post-header">
                   <h2 class="post-title">
@@ -19,7 +36,11 @@
                   <div class="post-meta">
                     <span class="meta-date">发布于 {{ formatDate(post.publishDate) }}</span>
                     <span class="meta-category">
-                      <router-link :to="`/category/${post.category.toLowerCase()}`" class="category-link">{{ post.category }}</router-link>
+                      <router-link
+                        :to="{ path: '/', query: { category: post.category } }"
+                        class="category-link"
+                        >{{ post.category }}</router-link
+                      >
                     </span>
                     <span class="meta-views">阅读({{ post.views }})</span>
                     <span class="meta-comments">评论({{ post.commentsCount }})</span>
@@ -66,7 +87,7 @@
               <div class="author-info">
                 <div class="author-avatar">
                   <img
-                    :src="user.avatar"
+                    :src="user.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
                     alt="博主头像"
                     class="avatar-img"
                   />
@@ -97,7 +118,10 @@
               <h3 class="sidebar-title">热门文章分类</h3>
               <ul class="category-list">
                 <li v-for="category in categories.slice(0, 3)" :key="category.id" class="category-item">
-                  <router-link :to="`/category/${category.id}`" class="category-link">
+                  <router-link
+                    :to="{ path: '/', query: { category: category.name } }"
+                    class="category-link"
+                  >
                     <span class="category-name">{{ category.name }}</span>
                     <span class="category-count">({{ category.count }})</span>
                   </router-link>
@@ -127,7 +151,7 @@
               <template v-if="userStore.token === '1'">
                 <p class="login-prompt">欢迎回来，{{ user.username }}！</p>
                 <div class="login-buttons">
-                  <router-link to="/editor" class="login-button">写文章</router-link>
+                  <router-link :to="`/dashboard/${userStore.user.id}/editor/new`" class="login-button">写文章</router-link>
                   <router-link to="/settings" class="register-button">设置</router-link>
                 </div>
               </template>
@@ -203,11 +227,24 @@ const formatDate = (dateString) => {
 // 前端自行分页，每页显示 5 条
 const postsPerPage = 5
 
-// 计算总页数
-const totalPages = computed(() => Math.ceil(posts.value.length / postsPerPage))
+// 与分类页一致：按分类名称筛选（URL query ?category=名称）
+const filteredPosts = computed(() => {
+  const cat = route.query.category
+  if (cat === undefined || cat === null || String(cat).trim() === '') {
+    return posts.value
+  }
+  const name = String(cat)
+  return posts.value.filter((p) => p.category === name)
+})
+
+// 计算总页数（基于筛选后的列表）
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(filteredPosts.value.length / postsPerPage))
+)
 
 // 显示当前页的文章数据
 const getCurrentPagePosts = () => {
+  const list = filteredPosts.value
   const startIndex = (currentPage.value - 1) * postsPerPage
   const endIndex = startIndex + postsPerPage
 
@@ -219,7 +256,7 @@ const getCurrentPagePosts = () => {
       });
     }, 100); // 延迟执行以确保页面已更新
     
-  return posts.value.slice(startIndex, endIndex)
+  return list.slice(startIndex, endIndex)
 }
 
 // 切换页面
@@ -306,6 +343,30 @@ watch(
     currentPage.value = Math.min(pageNum, Math.max(1, totalPages.value))
   }
 )
+
+// 切换分类时回到第 1 页（与分类页 `router.push({ query: { category } })` 配合）
+watch(
+  () => route.query.category,
+  () => {
+    currentPage.value = 1
+    const qPage = parseInt(route.query.page) || 1
+    if (qPage > 1) {
+      router.replace({ query: { ...route.query, page: 1 } })
+    }
+  }
+)
+
+// 筛选后总页数变少时，避免当前页超出范围
+watch(totalPages, (tp) => {
+  const maxP = Math.max(1, tp)
+  if (currentPage.value > maxP) {
+    currentPage.value = maxP
+    const qPage = parseInt(route.query.page) || 1
+    if (qPage !== maxP) {
+      router.replace({ query: { ...route.query, page: maxP } })
+    }
+  }
+})
 </script>
 
 <style scoped>
@@ -534,6 +595,50 @@ html {
   width: 100%;
   box-sizing: border-box;
 }
+
+.category-filter-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: #e0f2f1;
+  border-radius: 8px;
+  border: 1px solid #b2dfdb;
+  font-size: 14px;
+  color: #333;
+}
+
+.category-filter-banner .banner-label strong {
+  color: #00796b;
+}
+
+.category-filter-banner .banner-clear,
+.empty-filter-state .banner-clear {
+  color: #009688;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.category-filter-banner .banner-clear:hover,
+.empty-filter-state .banner-clear:hover {
+  text-decoration: underline;
+}
+
+.empty-filter-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: #666;
+}
+
+.empty-filter-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #555;
+}
+
 .main-content {
   width: 100%;
   min-height: 500px;

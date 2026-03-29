@@ -15,17 +15,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import SessionLocal, engine
 from models import Base
-from schemas import Post, PostCreate, PostUpdate, User, UserCreate, Category, CategoryCreate, Comment, CommentCreate
+from schemas import Post, PostCreate, PostUpdate, User, UserCreate, Category, CategoryCreate, CategoryCountUpdate, Comment, CommentCreate
 from crud import (
     get_posts, get_post_by_id, create_post, update_post, delete_post, increment_post_likes,
     get_users, get_user_by_id, get_user_by_username, create_user, authenticate_user,
-    get_categories, get_category_by_id, create_category,
+    get_categories, get_category_by_id, create_category, update_category_count,
     get_comments, get_comment_by_id, get_comments_by_post_id, create_comment
 )
 
 # 创建数据库表
 Base.metadata.create_all(bind=engine)
 
+# 创建FastAPI应用实例，自动生成API文档并提供交互式界面
 app = FastAPI(title="Blog API", version="1.0.0")
 
 # 添加CORS中间件
@@ -189,6 +190,14 @@ def read_category(category_id: int, db: Session = Depends(get_db)):
 @app.post("/categories", response_model=Category)
 def create_new_category(category: CategoryCreate, db: Session = Depends(get_db)):
     return create_category(db, category)
+
+@app.patch("/categories/{category_id}/count", response_model=Category)
+def patch_category_count(category_id: int, body: CategoryCountUpdate, db: Session = Depends(get_db)):
+    updated_category = update_category_count(db, category_id, body.count)
+    if updated_category is None:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    return updated_category
 
 # Comments API
 @app.get("/comments", response_model=List[Comment])

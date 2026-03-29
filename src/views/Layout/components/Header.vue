@@ -7,7 +7,7 @@
       <nav class="main-navigation">
         <router-link to="/" class="nav-link" active-class="active">首页</router-link>
         <!-- <router-link to="/blog" class="nav-link" active-class="active">博文</router-link> -->
-        <router-link to="/category" class="nav-link" active-class="active">分类</router-link>
+        <router-link to="/categories" class="nav-link" active-class="active">分类</router-link>
         <!-- <router-link to="/archive" class="nav-link" active-class="active">归档</router-link> -->
         <router-link to="/about" class="nav-link" active-class="active">关于</router-link>
         
@@ -22,7 +22,7 @@
           <div class="user-menu">
             <el-dropdown>
               <span class="el-dropdown-link">
-                <img :src="user.avatar" alt="头像" class="avatar">
+                <img :src="user.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'" alt="头像" class="avatar">
                 {{ user.username }}
                 <el-icon><arrow-down /></el-icon>
               </span>

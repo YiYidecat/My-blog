@@ -51,7 +51,7 @@
               <div class="author-info">
                 <div class="author-avatar">
                   <img
-                    :src="user.avatar"
+                    :src="user.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
                     alt="博主头像"
                     class="avatar-img"
                   />
