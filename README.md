@@ -3,6 +3,12 @@
 这是一个基于 Vue 3、Vite、Element Plus 和 Pinia 构建的博客系统。该项目也搭载了一个简单的展示个人简历的入口，用户可以在博客系统中查看和下载简历，同时还集成了一个基于AI（调用DeepSeek API和Ollama本地部署大模型）的智能问答功能，用来处理AKN4UN XML格式的文档，该模块被集成到了写文章的页面当中，需要用户登录才能使用，拉取该项目之后需要你自己在config->aiConfig文件当中部署自己的DeepSeek API密钥或者Ollama本地部署大模型的URL。
 
 本项目支持三种不同的数据获取方式，可根据不同使用场景灵活选择：
+本地开发环境：
+1. 优先使用Set-Location "D:\Code\JS\my-blog\backend"; python -m uvicorn main:app  --host 0.0.0.0 --port 8001启动后端服务。然后在浏览器中访问http://localhost:8001，即可查看API文档。在另外一个终端运行npm run dev启动前端服务，更改之后使用npm run build打包前端代码，最后上传到GitHub仓库，GitHub Actions会自动部署到GitHub Pages上。前端会根据环境变量自动切换API端点，在本地开发环境下会使用http://localhost:8001作为API端点，在GitHub Pages环境下会使用./api作为API端点。 
+
+2. 再次使用json-server --watch db.json --port 3000命令启动json-server服务，前端会自动切换到http://localhost:3000作为API端点，数据来自db.json文件中的模拟数据，但是该数据仅仅是存于内存中的，不会持久化到数据库中，然后使用npm run dev启动前端服务，适合前端开发和功能测试。最后使用npm run build打包前端代码，上传到GitHub仓库，GitHub Actions会自动部署到GitHub Pages上。前端会根据环境变量自动切换API端点，在本地开发环境下会使用http://localhost:3000作为API端点，在GitHub Pages环境下会使用./api作为API端点。
+   
+3. 最后是可以在Github Pages上直接使用静态JSON文件作为数据源的方式，前端会自动切换到./api作为API端点，数据来自public/api/*.json静态文件，但是由于GitHub Pages环境的限制，所有数据都是静态的，无法进行任何数据修改操作，用户登录、文章发布、与AI交互等动态功能都无法使用。
 
 ## 三种数据获取方式
 

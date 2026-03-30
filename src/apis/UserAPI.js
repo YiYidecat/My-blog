@@ -37,7 +37,40 @@ export const UserAPI = {
   /**
    * 用户认证
    */
-  authenticateUser: (credentials) => api.post('/users/authenticate', credentials)
+  authenticateUser: async (credentials) => {
+    // 检测是否在GitHub Pages环境中
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    
+    if (isGitHubPages) {
+      // GitHub Pages环境：从静态JSON文件中验证用户
+      const response = await api.get('/users'); // 这会获取users.json
+      
+      const user = response.find(u => 
+        u.username === credentials.username && 
+        u.password === credentials.password
+      );
+      
+      if (user) {
+        // 返回一个模拟认证成功的响应
+        return {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          bio: user.bio,
+          avatar: user.avatar,
+          postsCount: user.postsCount,
+          followersCount: user.followersCount,
+          followingCount: user.followingCount,
+          createdAt: user.createdAt
+        };
+      } else {
+        throw new Error('用户名或密码错误');
+      }
+    } else {
+      // 本地开发环境：使用后端API进行认证
+      return api.post('/users/authenticate', credentials);
+    }
+  }
 
 
 }
