@@ -35,7 +35,7 @@ export const UserAPI = {
   deleteUser: (id) => api.delete(`/users/${id}`),
 
   /**
-   * 用户认证
+   * 用户认证 - 只负责API调用，不处理认证逻辑
    */
   authenticateUser: async (credentials) => {
     // 检测是否在GitHub Pages环境中
@@ -53,15 +53,19 @@ export const UserAPI = {
       if (user) {
         // 返回一个模拟认证成功的响应
         return {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          bio: user.bio,
-          avatar: user.avatar,
-          postsCount: user.postsCount,
-          followersCount: user.followersCount,
-          followingCount: user.followingCount,
-          createdAt: user.createdAt
+          access_token: `mock_token_${Date.now()}`,
+          token_type: 'bearer',
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            avatar: user.avatar,
+            postsCount: user.postsCount,
+            followersCount: user.followersCount,
+            followingCount: user.followingCount,
+            createdAt: user.createdAt
+          }
         };
       } else {
         throw new Error('用户名或密码错误');

@@ -4,14 +4,20 @@ FastAPI主应用程序文件
 功能: 提供博客系统的REST API接口，包括文章、用户、分类、评论的管理功能
 """
 
+from datetime import datetime, timedelta
+from typing import List, Optional
 from fastapi import FastAPI, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import List, Optional
 import json
-from datetime import date
 import uuid
-
+from passlib.context import CryptContext
 from fastapi.middleware.cors import CORSMiddleware
+from jose import JWTError, jwt
+from dotenv import load_dotenv
+import os
+
+# 加载环境变量
+load_dotenv()
 
 from database import SessionLocal, engine
 from models import Base
@@ -22,6 +28,11 @@ from crud import (
     get_categories, get_category_by_id, create_category, update_category_count,
     get_comments, get_comment_by_id, get_comments_by_post_id, create_comment
 )
+
+# JWT配置
+SECRET_KEY = os.getenv("SECRET_KEY", "your-super-secret-key-change-this-in-production-environment-please")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # 创建数据库表
 Base.metadata.create_all(bind=engine)
@@ -145,11 +156,39 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
 
 from pydantic import BaseModel
 
+# JWT工具函数
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+    bio: Optional[str] = None
+    avatar: Optional[str] = None
+    postsCount: int
+    followersCount: int
+    followingCount: int
+    createdAt: datetime
+    is_active: bool
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserResponse
+
 class LoginRequest(BaseModel):
     username: str
     password: str
 
-@app.post("/users/authenticate")
+@app.post("/users/authenticate", response_model=Token)
 def authenticate_user_endpoint(request: LoginRequest, db: Session = Depends(get_db)):
     username = request.username
     password = request.password
@@ -161,18 +200,29 @@ def authenticate_user_endpoint(request: LoginRequest, db: Session = Depends(get_
     if not user:
         raise HTTPException(status_code=401, detail="Invalid username or password")
     
-    # 返回用户信息
+    # 创建访问令牌
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username, "user_id": user.id}, 
+        expires_delta=access_token_expires
+    )
+    
+    # 返回用户信息和token
     return {
-        "id": user.id,
-        "username": user.username,
-        "email": user.email,
-        "bio": user.bio,
-        "avatar": user.avatar,
-        "postsCount": user.postsCount,
-        "followersCount": user.followersCount,
-        "followingCount": user.followingCount,
-        "createdAt": user.createdAt,
-        "is_active": user.is_active
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "username": user.username,
+            "email": user.email,
+            "bio": user.bio,
+            "avatar": user.avatar,
+            "postsCount": user.postsCount,
+            "followersCount": user.followersCount,
+            "followingCount": user.followingCount,
+            "createdAt": user.createdAt,
+            "is_active": user.is_active
+        }
     }
 
 # Categories API

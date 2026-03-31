@@ -9,7 +9,8 @@ from sqlalchemy import and_
 from models import Post, User, Category, Comment
 from schemas import PostCreate, PostUpdate, UserCreate, CategoryCreate, CommentCreate
 import json
-from datetime import date
+from datetime import date, datetime
+from urllib.parse import quote
 
 def get_posts(db: Session, skip: int = 0, limit: int = 100):
     posts = db.query(Post).offset(skip).limit(limit).all()
@@ -119,11 +120,30 @@ def create_user(db: Session, user: UserCreate):
     
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     hashed_password = pwd_context.hash(user.password)
+
+    # 默认简介
+    default_bio = "这个人很神秘，什么都没有写"
+
+    # 根据用户名首字生成头像 SVG data URL
+    first_char = user.username[0] if user.username else "用"
+    encoded_char = quote(first_char, safe="")
+    default_avatar = (
+        "data:image/svg+xml,"
+        "%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E"
+        "%3Ccircle cx='40' cy='40' r='40' fill='%23009688'/%3E"
+        "%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' "
+        "fill='white' font-size='30' font-weight='bold'%3E"
+        f"{encoded_char}"
+        "%3C/text%3E%3C/svg%3E"
+    )
     
     db_user = User(
         username=user.username,
         email=user.email,
-        hashed_password=hashed_password
+        hashed_password=hashed_password,
+        bio=default_bio,
+        avatar=default_avatar,
+        createdAt=datetime.utcnow()
     )
     db.add(db_user)
     db.commit()

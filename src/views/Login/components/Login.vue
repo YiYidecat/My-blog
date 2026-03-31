@@ -53,25 +53,24 @@ const loginForm = ref({
 
 const handleLogin = async () => {
   try {
-    // 直接调用后端的认证接口
-    const response = await UserAPI.authenticateUser({
+    // 登录现在直接使用用户名和密码进行认证
+    const result = await userStore.login({
       username: loginForm.value.username,
       password: loginForm.value.password
     })
+    console.log("登录结果:", result)
     
-    if (response && response.id) {
-      // 登录成功，保存用户信息到store
-      userStore.login(response)
-      console.log("登录的用户是", response)
+    if (result.success && result.user) {
+      console.log("登录的用户是", result.user)
 
       // 显示成功消息
       ElMessage.success('登录成功')
       
       // 跳转到当前用户的仪表盘页面
-      router.push(`/dashboard/${response.id}`)
+      router.push(`/dashboard/${result.user.id}`)
     } else {
       // 登录失败
-      ElMessage.error('用户名或密码错误')
+      ElMessage.error(result.message || '用户名或密码错误')
     }
   } catch (error) {
     console.error('登录失败:', error)

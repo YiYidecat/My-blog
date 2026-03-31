@@ -12,7 +12,7 @@
         <router-link to="/about" class="nav-link" active-class="active">关于</router-link>
         
         <!-- 登录状态下的导航项 -->
-        <template v-if="userStore.token === '1'">
+        <template v-if="userStore.user">
           <!-- <router-link :to="`/dashboard/${userStore.user.id}`" class="nav-link" active-class="active">仪表盘</router-link> -->
           <router-link :to="`/dashboard/${userStore.user.id}`" class="nav-link" active-class="active">我的文章</router-link>
           <router-link to="/dashboard/:userId/favorites" class="nav-link" active-class="active">收藏</router-link>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.js'
 import { ElMessage, ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
@@ -72,6 +72,22 @@ const user = ref({
   articlesCount: 0,
   commentsCount: 0
 })
+
+const updateUserFromStore = () => {
+  if (userStore.user) {
+    user.value = {
+      ...userStore.user,
+      username: userStore.user.username || '用户',
+      avatar: userStore.user.avatar || 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      bio: userStore.user.bio || '暂无简介',
+      postsCount: userStore.user.postsCount || 0,
+      articlesCount: userStore.user.articlesCount || 0,
+      commentsCount: userStore.user.commentsCount || 0
+    }
+    // console.log("当前用户信息:", user.value)
+    // console.log("当前token:", userStore.token)
+  }
+}
 
 // 跳转到个人资料页
 const goToProfile = () => {
@@ -93,16 +109,19 @@ const handleLogout = () => {
 }
 
 onMounted(() => {
-  // 监听用户store的变化，确保用户信息是最新的
-  const updateUserFromStore = () => {
-    if (userStore.user) {
-      user.value = userStore.user
-    }
-  }
-  
-  // 手动调用一次以确保当前用户信息正确
+  // 刷新页面时先从 localStorage 恢复 store
+  userStore.initializeFromStorage()
+
+  // 首次同步一次
   updateUserFromStore()
 })
+
+// 监听 store 变化：登录/登出/刷新后恢复都会触发
+watch(
+  () => [userStore.token, userStore.user],
+  () => updateUserFromStore(),
+  { immediate: true }
+)
 </script>
 
 <style scoped>
